@@ -1,19 +1,20 @@
 package com.ty.codegen.util;
 
 import java.sql.*;
+import java.util.Objects;
 
 public class MysqlDBUtil {
     //链接字符串
-    public Connection conn = null;
+    public static Connection conn = null;
     //预编译对象
-    public PreparedStatement pst = null;
+    public static PreparedStatement pst = null;
     //结果集对象
-    public ResultSet rs = null;
+    public static ResultSet rs = null;
 
     private static final String DRIVER = "com.mysql.cj.jdbc.Driver";
-    private static final String URL = "jdbc:mysql://120.76.41.108:3306/bee_express_dev?useLegacyDatetimeCode=false&serverTimezone=America/New_York";
-    private static final String USER = "sunjd";
-    private static final String PASSWORD = "sunjd_0876";
+    private static final String URL = "jdbc:mysql://127.0.0.1:3306/intelligencex?useLegacyDatetimeCode=false&serverTimezone=America/New_York";
+    private static final String USER = "root";
+    private static final String PASSWORD = "root";
 
     //静态代码块
     static {
@@ -29,7 +30,9 @@ public class MysqlDBUtil {
 
     //链接字符串
     public static Connection getConn() {
-
+        if (!Objects.isNull(MysqlDBUtil.conn)) {
+            return MysqlDBUtil.conn;
+        }
         try {
             return   DriverManager.getConnection(URL, USER, PASSWORD);
         } catch (SQLException e) {
@@ -40,14 +43,14 @@ public class MysqlDBUtil {
     }
 
     //更新的方法
-    public int getUpdate(String sql, Object... obj) {
+    public static int getUpdate(String sql, Object... obj) {
 
         try {
 
             //连接字符串
-            conn = getConn();
+            //conn = getConn();
             //把sql语句转入数据库中
-            pst = conn.prepareStatement(sql);
+            pst = MysqlDBUtil.conn.prepareStatement(sql);
             for (int i = 0; i < obj.length; i++) {
 
                 pst.setObject(i + 1, obj[i]);
@@ -65,12 +68,12 @@ public class MysqlDBUtil {
     }
 
     //查询的方法
-    public ResultSet getQuery(String sql, Object... obj) {
+    public static ResultSet getQuery(String sql, Object... obj) {
 
         try {
 
-            conn = getConn();
-            pst = conn.prepareStatement(sql);
+            //conn = getConn();
+            pst = MysqlDBUtil.conn.prepareStatement(sql);
             for (int i = 0; i < obj.length; i++) {
 
                 pst.setObject(i + 1, obj[i]);
@@ -85,18 +88,18 @@ public class MysqlDBUtil {
     }
 
     //关闭链接
-    public void closeAll() {
+    public static void closeAll() {
 
         try {
 
-            if (conn != null) {
-                conn.close();
+            if (MysqlDBUtil.conn != null) {
+                MysqlDBUtil.conn.close();
             }
-            if (pst != null) {
-                pst.close();
+            if (MysqlDBUtil.pst != null) {
+                MysqlDBUtil.pst.close();
             }
-            if (rs != null) {
-                rs.close();
+            if (MysqlDBUtil.rs != null) {
+                MysqlDBUtil.rs.close();
             }
 
         } catch (Exception e) {
