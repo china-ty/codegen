@@ -5,6 +5,7 @@ import com.ty.codegen.event.TableTreeMouseEventAdapter;
 import com.ty.codegen.proxy.ServiceProxy;
 import com.ty.codegen.service.TableService;
 import com.ty.codegen.service.impl.TableServiceImpl;
+import com.ty.codegen.util.IconUtil;
 import com.ty.codegen.util.MysqlDBUtil;
 
 import javax.swing.*;
@@ -13,8 +14,6 @@ import javax.swing.table.TableColumn;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
 import java.awt.*;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.List;
@@ -68,10 +67,6 @@ public class IndexWin extends JFrame {
             }
 
         });
-        this.addComponentListener(new ComponentAdapter(){
-            @Override public void componentResized(ComponentEvent e){
-                // write you code here
-            }});
         // 显示窗体
         this.setVisible(true);
     }
@@ -173,11 +168,11 @@ public class IndexWin extends JFrame {
             }
         };
         // 展开时节点图标
-        renderer.setOpenIcon(new ImageIcon("src/com/ty/codegen/img/mysql.png"));
+        renderer.setOpenIcon(IconUtil.MYSQL);
         // 折叠时节点图标
-        renderer.setClosedIcon(new ImageIcon("src/com/ty/codegen/img/mysql.png"));
+        renderer.setClosedIcon(IconUtil.MYSQL);
         // 叶子节点图标
-        renderer.setLeafIcon(new ImageIcon("src/com/ty/codegen/img/table.png"));
+        renderer.setLeafIcon(IconUtil.TABLE);
         // 添加到表节点中
         tableTrees.setCellRenderer(renderer);
         // 设置子节点与子节点直接的高度(间隙)
