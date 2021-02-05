@@ -14,6 +14,8 @@ import javax.swing.table.TableColumn;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.List;
@@ -116,8 +118,18 @@ public class IndexWin extends JFrame {
 
     private JPanel createButtons() {
         JPanel jPanel = new JPanel();
-        JButton ok = new JButton("生成");
-        jPanel.add(ok);
+        JButton configButton = new JButton("配置");
+
+        configButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // 打开配置窗体
+                new ConfigWin();
+            }
+        });
+        JButton openGenFilePathButton = new JButton("打开生成路径");
+        jPanel.add(configButton);
+        jPanel.add(openGenFilePathButton);
         return jPanel;
     }
 
