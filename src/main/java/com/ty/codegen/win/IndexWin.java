@@ -18,7 +18,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * 主界面窗体
@@ -77,7 +80,7 @@ public class IndexWin extends JFrame {
      * 创建顶部分割面板(左 表名的展示 右 表的字段展示)
      * @return
      */
-    private JSplitPane createTopContentSplitPane() {
+    private JSplitPane createTopContentSplitPane() throws SQLException{
         // 创建一个分割容器面板(左右布局)
         JSplitPane contentSplitPane = new JSplitPane();
         // 让分割线禁用出箭头
@@ -140,7 +143,7 @@ public class IndexWin extends JFrame {
      * @param height 设置面板高度
      * @return JScrollPane
      */
-    private JScrollPane createLeftTableNames(final int height) {
+    private JScrollPane createLeftTableNames(final int height) throws SQLException {
         // 添加滚动面板  默认 水平滚动和垂直滚动 都是需要时才显示的
         JScrollPane tablesScrollPanel = new JScrollPane();
         // 取消水平滚动显示
@@ -155,14 +158,17 @@ public class IndexWin extends JFrame {
         // 设置根节点(数据库名)
         DefaultMutableTreeNode rootNode = new DefaultMutableTreeNode(databaseName);
         // 获取所有表名
-        List<String> tableList = tableService.listTableNames();
+        Map<String,String> tableNameMap = tableService.listTableNames();
         DefaultMutableTreeNode tableNode = null;
         // 遍历所有表 添加到数据库中(主节点rootNode)
-        for (int i = 0; i < tableList.size(); i++) {
+        Set<Map.Entry<String, String>> entries = tableNameMap.entrySet();
+        for (Map.Entry<String, String> entry : entries) {
             // 参数二 表示不能有子节点
-            tableNode = new DefaultMutableTreeNode(tableList.get(i), false);
+            tableNode = new DefaultMutableTreeNode(entry.getKey(), false);
             rootNode.add(tableNode);
         }
+
+
         // 创建数据库根节点
         JTree tableTrees = new JTree(rootNode);
         // tableTrees.setEnabled(false);
@@ -174,7 +180,8 @@ public class IndexWin extends JFrame {
             public Component getTreeCellRendererComponent(JTree tree, Object value,
                                                           boolean sel, boolean expanded, boolean leaf, int row,
                                                           boolean hasFocus) {
-                tree.setToolTipText("这是工具提示: " + value);
+                String toolTipText = tableNameMap.get(value.toString());
+                tree.setToolTipText(toolTipText == null ? value.toString() : toolTipText);
                 return super.getTreeCellRendererComponent(tree, value, sel,
                         expanded, leaf, row, hasFocus);
             }

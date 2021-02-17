@@ -23,7 +23,12 @@
             <artifactId>hutool-core</artifactId>
             <version>5.5.7</version>
         </dependency>
-
+        <!-- lombok工具 -->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.16</version>
+        </dependency>
     </dependencies>
 
     <build>

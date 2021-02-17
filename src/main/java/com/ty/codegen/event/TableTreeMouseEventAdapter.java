@@ -1,14 +1,23 @@
 package com.ty.codegen.event;
 
+import com.ty.codegen.dao.TableDao;
+import com.ty.codegen.entity.TableField;
+import com.ty.codegen.service.TableService;
+import com.ty.codegen.service.impl.TableServiceImpl;
+
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.List;
+import java.util.Vector;
 
 /**
  * 主窗体 左部 树型表 鼠标 事件 监听 适配器
  */
 public class TableTreeMouseEventAdapter extends MouseAdapter {
+
+    private TableService tableService = new TableServiceImpl();
 
     private JTree tableTrees;
 
@@ -27,23 +36,23 @@ public class TableTreeMouseEventAdapter extends MouseAdapter {
             this.clear(tableModel);
             // 获取选中的节点的名字
             String selectNodeName = tableTrees.getSelectionPath().getLastPathComponent().toString();
-            System.out.println("当前选中的表是: " + selectNodeName);
-
-
-
-            if ("bee_add_service".equalsIgnoreCase(selectNodeName)) {
-                // 设置行数据
-                Object[] data1 = {"Person1", 80, 80, 80, 240, false, 99};
-                Object[] data2 = {"Person2", 80, 80, 80, 240, false, 99};
-                Object[] data3 = {"Person3", 80, 80, 80, 240, true, 99};
-                tableModel.addRow(data1);
-                tableModel.addRow(data2);
-                tableModel.addRow(data3);
-            }
-            if ("bee_commission_log".equalsIgnoreCase(selectNodeName)) {
-                // 设置行数据
-                Object[] data = {"Student", 80, 80, 80, 240, true, 99};
-                tableModel.addRow(data);
+            try {
+                List<TableField> tableFields = tableService.getTableFields(selectNodeName);
+                for (TableField tableField : tableFields) {
+                    Object[] objects = new Object[7];
+                    objects[0] = tableField.getName();
+                    objects[1] = tableField.getDbType();
+                    objects[2] = tableField.getEntityType();
+                    objects[3] = tableField.getLength();
+                    objects[4] = tableField.getDecimal();
+                    objects[5] = tableField.getRequired();
+                    objects[6] = tableField.getRemarks();
+                    tableModel.addRow(objects);
+                }
+            } catch (Exception exception) {
+                System.out.println("数据库异常");
+                JOptionPane.showMessageDialog(null, "数据库链接错误!", "提示",JOptionPane.ERROR_MESSAGE);
+                // exception.printStackTrace();
             }
         }
     }
