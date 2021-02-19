@@ -1,5 +1,6 @@
 package com.ty.codegen.win;
 
+import com.ty.codegen.event.TableFieldScrollPaneMouseEventAdapter;
 import com.ty.codegen.event.TableModelEventAdapter;
 import com.ty.codegen.event.TableTreeMouseEventAdapter;
 import com.ty.codegen.proxy.ServiceProxy;
@@ -119,6 +120,8 @@ public class IndexWin extends JFrame {
         // 监听数据表格中数据是否改变事件
         table.addMouseListener(new TableModelEventAdapter(tableModel));
         tableFieldScrollPane.setViewportView(table);
+        // 添加表字段面板鼠标监听
+        tableFieldScrollPane.addMouseListener(new TableFieldScrollPaneMouseEventAdapter());
         return tableFieldScrollPane;
     }
 
