@@ -9,11 +9,11 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.List;
 
-public class TableModelEventAdapter extends MouseAdapter {
+public class TableFieldEventAdapter extends MouseAdapter {
 
     private TableModel tableModel;
 
-    public TableModelEventAdapter(TableModel tableModel) {
+    public TableFieldEventAdapter(TableModel tableModel) {
         this.tableModel = tableModel;
     }
 

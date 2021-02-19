@@ -1,7 +1,7 @@
 package com.ty.codegen.win;
 
 import com.ty.codegen.event.TableFieldScrollPaneMouseEventAdapter;
-import com.ty.codegen.event.TableModelEventAdapter;
+import com.ty.codegen.event.TableFieldEventAdapter;
 import com.ty.codegen.event.TableTreeMouseEventAdapter;
 import com.ty.codegen.proxy.ServiceProxy;
 import com.ty.codegen.service.TableService;
@@ -108,18 +108,18 @@ public class IndexWin extends JFrame {
         tableModel.setDataVector(null, columnNames);
         // tableModel.setDataVector(rowData,columnNames);
         // 创建一个表格，指定 所有行数据 和 表头
-        JTable table = new JTable(tableModel);
+        JTable tableField = new JTable(tableModel);
         // 设置所有行高
-        table.setRowHeight(25);
+        tableField.setRowHeight(25);
         // 取消垂直线显示
-        table.setShowVerticalLines(false);
+        tableField.setShowVerticalLines(false);
         // 设置下标第5列使用Boolean(复选框) 注意 这一列传入的类型只能是Boolean
-        TableColumn column = table.getColumnModel().getColumn(5);
-        column.setCellEditor(table.getDefaultEditor(Boolean.class));
-        column.setCellRenderer(table.getDefaultRenderer(Boolean.class));
+        TableColumn column = tableField.getColumnModel().getColumn(5);
+        column.setCellEditor(tableField.getDefaultEditor(Boolean.class));
+        column.setCellRenderer(tableField.getDefaultRenderer(Boolean.class));
         // 监听数据表格中数据是否改变事件
-        table.addMouseListener(new TableModelEventAdapter(tableModel));
-        tableFieldScrollPane.setViewportView(table);
+        tableField.addMouseListener(new TableFieldEventAdapter(tableModel));
+        tableFieldScrollPane.setViewportView(tableField);
         // 添加表字段面板鼠标监听
         tableFieldScrollPane.addMouseListener(new TableFieldScrollPaneMouseEventAdapter());
         return tableFieldScrollPane;
