@@ -13,8 +13,8 @@ public class MysqlDBUtil {
 
     private static final String DRIVER = "com.mysql.cj.jdbc.Driver";
     private static final String URL = "jdbc:mysql://120.76.41.108:3306/bee_express_dev?useLegacyDatetimeCode=false&serverTimezone=America/New_York&connectTimeout=5000&socketTimeout=5000";
-    private static final String USER = "sunjd";
-    private static final String PASSWORD = "sunjd_0876";
+    private static final String USER = "linxx";
+    private static final String PASSWORD = "linxx_1181";
 
     //静态代码块
     static {

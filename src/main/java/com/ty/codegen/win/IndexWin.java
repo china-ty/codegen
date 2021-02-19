@@ -19,7 +19,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.sql.SQLException;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -109,6 +108,10 @@ public class IndexWin extends JFrame {
         // tableModel.setDataVector(rowData,columnNames);
         // 创建一个表格，指定 所有行数据 和 表头
         JTable table = new JTable(tableModel);
+        // 设置所有行高
+        table.setRowHeight(25);
+        // 取消垂直线显示
+        table.setShowVerticalLines(false);
         // 设置下标第5列使用Boolean(复选框) 注意 这一列传入的类型只能是Boolean
         TableColumn column = table.getColumnModel().getColumn(5);
         column.setCellEditor(table.getDefaultEditor(Boolean.class));
@@ -170,7 +173,17 @@ public class IndexWin extends JFrame {
 
 
         // 创建数据库根节点
-        JTree tableTrees = new JTree(rootNode);
+        JTree tableTrees = new JTree(rootNode){
+            @Override
+            public JToolTip createToolTip() {
+                // 创建默认工具提示标签
+                JToolTip tip = super.createToolTip();
+                tip.setBackground(Color.BLACK);
+                // 取消边框(创建一个空边框)
+                tip.setBorder(BorderFactory.createEmptyBorder());
+                return tip;
+            }
+        };
         // tableTrees.setEnabled(false);
         // 设置对数据表节点的相关鼠标的监听(查询表相关的字段属性等功能)
         tableTrees.addMouseListener(new TableTreeMouseEventAdapter(tableTrees, tableModel));
@@ -181,7 +194,8 @@ public class IndexWin extends JFrame {
                                                           boolean sel, boolean expanded, boolean leaf, int row,
                                                           boolean hasFocus) {
                 String toolTipText = tableNameMap.get(value.toString());
-                tree.setToolTipText(toolTipText == null ? value.toString() : toolTipText);
+                toolTipText = (toolTipText == null || toolTipText.length() <=  0) ? value.toString() : toolTipText;
+                tree.setToolTipText("<html><div height='17px'><font color='white'>" + toolTipText + "</font></div></html>");
                 return super.getTreeCellRendererComponent(tree, value, sel,
                         expanded, leaf, row, hasFocus);
             }
