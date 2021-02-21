@@ -2,7 +2,6 @@ package com.ty.codegen.util;
 
 import cn.hutool.core.io.IoUtil;
 import cn.hutool.core.io.resource.ResourceUtil;
-import sun.swing.ImageIconUIResource;
 
 import javax.swing.*;
 import java.io.InputStream;
@@ -33,7 +32,7 @@ public class IconUtil {
         InputStream fileStream = ResourceUtil.getStream(ROOT_PATH + path);
         // 将文件流转为byte数组
         byte[] fileByte = IoUtil.readBytes(fileStream);
-        return new ImageIconUIResource(fileByte);
+        return new ImageIcon(fileByte);
     }
 
     public static final Icon MYSQL = load("mysql.png");

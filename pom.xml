@@ -58,21 +58,38 @@
                 </executions>
 
             </plugin>
+           <!-- 打包的时候将参数配置添加到MANIFEST.MF文件中 -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>3.2.0</version>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <addClasspath>true</addClasspath>
+                        </manifest>
+                        <manifestEntries>
+                            <!-- 添加参数配置 标签名为key 标签内为value-->
+                            <SplashScreen-Image>picture/loading.gif</SplashScreen-Image>
+                        </manifestEntries>
+                    </archive>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
     <profiles>
         <!-- 设置Maven JDK编译版本-->
-        <profile>
-            <id>jdk-1.8</id>
-            <activation>
-                <activeByDefault>true</activeByDefault>
-                <jdk>1.8</jdk>
-            </activation>
-            <properties>
-                <maven.compiler.source>1.8</maven.compiler.source>
-                <maven.compiler.target>1.8</maven.compiler.target>
-                <maven.compiler.compilerVersion>1.8</maven.compiler.compilerVersion>
-            </properties>
-        </profile>
+<!--        <profile>-->
+<!--            <id>jdk-1.8</id>-->
+<!--            <activation>-->
+<!--                <activeByDefault>true</activeByDefault>-->
+<!--                <jdk>1.8</jdk>-->
+<!--            </activation>-->
+<!--            <properties>-->
+<!--                <maven.compiler.source>1.8</maven.compiler.source>-->
+<!--                <maven.compiler.target>1.8</maven.compiler.target>-->
+<!--                <maven.compiler.compilerVersion>1.8</maven.compiler.compilerVersion>-->
+<!--            </properties>-->
+<!--        </profile>-->
     </profiles>
 </project>
