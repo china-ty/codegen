@@ -43,9 +43,77 @@ public class IndexWin extends JFrame {
 
     public IndexWin() throws Exception {
         // 主窗体组件和数据初始化
+        loading();
         init();
     }
 
+    private void loading() {
+        final SplashScreen splash = SplashScreen.getSplashScreen();
+        if (splash == null) {
+            System.out.println("SplashScreen.getSplashScreen() returned null");
+            return;
+        }
+        // 下面给splash screen画一个边框
+        Rectangle bounds = splash.getBounds();
+        Graphics2D g = splash.createGraphics();
+        if (g == null) {
+            System.out.println("g is null");
+            return;
+        }
+        // g.setColor(Color.BLUE);
+        //g.drawRect(0, 0, bounds.width - 1, bounds.height - 1);
+        // 加载进度提示信息
+        final String[] stages = {"正在启动", "正在读取数据", "正在加载相关文档", "启动完成"};
+        int stage = 0;
+        for(int i = 0; i < 100; i++) {
+            String status = stages[stage];
+            if (splash != null) {
+                // 更新闪屏图像(进度条)
+                updateSplash(splash,g,status, i,bounds);
+            }
+            if (i == 30) {
+                stage = 1;
+            } else if (i == 70) {
+                stage = 2;
+            } else if (i == 90) {
+                stage = 3;
+            }
+            try {
+                //故意等待
+                Thread.sleep(20);
+            } catch (Exception e) {
+                //异常不做处理
+            }
+        }
+        splash.close();
+    }
+    protected void updateSplash(SplashScreen splash, Graphics2D g,String status, int progress,Rectangle bounds) {
+        if (splash == null || g == null) {
+            return;
+        }
+        //重画splash上面的进度并通知splash更新界面
+        drawSplash(g, status, progress,bounds);
+        splash.update();
+    }
+    protected void drawSplash(Graphics2D splashGraphics, String status, int progress,Rectangle bounds) {
+        // 进度条长度
+        int barWidth = bounds.width;
+        splashGraphics.setComposite(AlphaComposite.Clear);
+        // 闪屏边框
+        splashGraphics.fillRect(1, 10, bounds.width - 2, 20);
+        // 模型
+        splashGraphics.setPaintMode();
+        // 字符串颜色
+        splashGraphics.setColor(Color.BLACK);
+        // 画当前提示字符串
+        splashGraphics.drawString(status, 10, 20);
+        // 进度条填充颜色
+        splashGraphics.setColor(Color.RED);
+        // 进度条当前值
+        int width = progress * barWidth / 100;
+        // 绘画进度条
+        splashGraphics.fillRect(0, bounds.height - 20, width, 15);
+    }
     /**
      * 初始化设置
      */
