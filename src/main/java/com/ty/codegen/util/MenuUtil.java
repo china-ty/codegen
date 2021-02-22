@@ -1,7 +1,5 @@
 package com.ty.codegen.util;
 
-import cn.hutool.core.collection.CollectionUtil;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
@@ -46,7 +44,7 @@ public class MenuUtil {
         if (mouseEvent.getButton() != MouseEvent.BUTTON3) {
             return;
         }
-        if (CollectionUtil.isEmpty(menuItemList)) {
+        if (menuItemList == null || menuItemList.isEmpty()) {
             return;
         }
         JPopupMenu popupMenu = new JPopupMenu();

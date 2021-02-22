@@ -17,12 +17,6 @@
             <artifactId>mysql-connector-java</artifactId>
             <version>8.0.22</version>
         </dependency>
-        <!-- Hutool工具类 -->
-        <dependency>
-            <groupId>cn.hutool</groupId>
-            <artifactId>hutool-core</artifactId>
-            <version>5.5.7</version>
-        </dependency>
         <!-- lombok工具 -->
         <dependency>
             <groupId>org.projectlombok</groupId>
@@ -40,6 +34,11 @@
                 <configuration>
                     <!--    取消dependency-reduced-pom文件的生成    -->
                     <createDependencyReducedPom>false</createDependencyReducedPom>
+                    <transformers>
+                        <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                            <mainClass>com.ty.codegen.MainApplication</mainClass>
+                        </transformer>
+                    </transformers>
                 </configuration>
                 <executions>
                     <execution>
@@ -47,13 +46,6 @@
                         <goals>
                             <goal>shade</goal>
                         </goals>
-                        <configuration>
-                            <transformers>
-                                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                                    <mainClass>com.ty.codegen.MainApplication</mainClass>
-                                </transformer>
-                            </transformers>
-                        </configuration>
                     </execution>
                 </executions>
 
@@ -78,18 +70,18 @@
         </plugins>
     </build>
     <profiles>
-        <!-- 设置Maven JDK编译版本-->
-<!--        <profile>-->
-<!--            <id>jdk-1.8</id>-->
-<!--            <activation>-->
-<!--                <activeByDefault>true</activeByDefault>-->
-<!--                <jdk>1.8</jdk>-->
-<!--            </activation>-->
-<!--            <properties>-->
-<!--                <maven.compiler.source>1.8</maven.compiler.source>-->
-<!--                <maven.compiler.target>1.8</maven.compiler.target>-->
-<!--                <maven.compiler.compilerVersion>1.8</maven.compiler.compilerVersion>-->
-<!--            </properties>-->
-<!--        </profile>-->
+        <!-- 设置Maven 编译环境-->
+        <profile>
+            <id>dev</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+                <jdk>1.8</jdk>
+            </activation>
+            <properties>
+                <maven.compiler.source>1.8</maven.compiler.source>
+                <maven.compiler.target>1.8</maven.compiler.target>
+                <maven.compiler.compilerVersion>1.8</maven.compiler.compilerVersion>
+            </properties>
+        </profile>
     </profiles>
 </project>
