@@ -1,5 +1,8 @@
 package com.ty.codegen.util;
 
+import com.zaxxer.hikari.HikariConfig;
+import com.zaxxer.hikari.HikariDataSource;
+
 import java.sql.*;
 import java.util.Objects;
 
@@ -18,17 +21,18 @@ public class MysqlDBUtil {
 
     //静态代码块
     static {
+            HikariConfig hikariConfig = new HikariConfig("/config/database.properties");
+            HikariDataSource ds = new HikariDataSource(hikariConfig);
         try {
-            //加载驱动
-            Class.forName(DRIVER);
-
-        } catch (ClassNotFoundException e) {
-
-            e.printStackTrace();
+            MysqlDBUtil.conn = ds.getConnection();
+        } catch (SQLException throwables) {
+            System.out.println("连接数据库失败!");
+            throwables.printStackTrace();
         }
     }
 
     //链接字符串
+    @Deprecated
     public static Connection getConn() {
         if (!Objects.isNull(MysqlDBUtil.conn)) {
             return MysqlDBUtil.conn;
