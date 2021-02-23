@@ -37,9 +37,15 @@ public class WinGlobalSettingUtil {
      */
     public static void initWinStyle() {
         try {
-            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException
-                | UnsupportedLookAndFeelException e) {
+           // String[] lafs = new String[]{"de.javasoft.plaf.synthetica.SyntheticaPlainLookAndFeel", "javax.swing.plaf.metal.MetalLookAndFeel"};
+            String[] lafs = new String[]{"de.javasoft.plaf.synthetica.SyntheticaStandardLookAndFeel", "de.javasoft.plaf.synthetica.SyntheticaPlainLookAndFeel"};
+            String[] li = new String[]{"Licensee=Jyloo Software", "LicenseRegistrationNumber=------", "Product=Synthetica", "LicenseType=For internal tests only", "ExpireDate=--.--.----", "MaxVersion=2.31.999"};
+            UIManager.put("Synthetica.license.info", li);
+            UIManager.put("Synthetica.license.key", "FFFCC94B-00A0D2E4-5FECE971-5D4FD24F");
+            UIManager.setLookAndFeel(lafs[1]);
+
+
+        } catch (Exception e) {
             // TODO Auto-generated catch block
             System.err.println("窗体样式风格初始异常");
             e.printStackTrace();

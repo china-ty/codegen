@@ -23,6 +23,41 @@
             <artifactId>ojdbc8</artifactId>
             <version>19.7.0.0</version>
         </dependency>
+<!--        <dependency>-->
+<!--            <groupId>org.ty</groupId>-->
+<!--            <artifactId>syntheticaPlainSimpleDemo</artifactId>-->
+<!--            <version>1.0</version>-->
+<!--            <scope>system</scope>-->
+<!--            <systemPath>${basedir}/src/main/resources/lib/syntheticaPlainSimpleDemo.jar</systemPath>-->
+<!--        </dependency>-->
+        <!-- flamingo 介绍 https://blog.csdn.net/fr961951149/article/details/98443465 -->
+        <dependency>
+            <groupId>com.github.insubstantial</groupId>
+            <artifactId>flamingo</artifactId>
+            <version>7.3</version>
+        </dependency>
+        <!-- substance 主题包 -->
+        <dependency>
+            <groupId>com.github.insubstantial</groupId>
+            <artifactId>substance</artifactId>
+            <version>7.3</version>
+        </dependency>
+        <!--         https://mvnrepository.com/artifact/org.pushing-pixels/radiance-substance 最新-->
+        <!--        <dependency>-->
+        <!--            <groupId>org.pushing-pixels</groupId>-->
+        <!--            <artifactId>radiance-substance</artifactId>-->
+        <!--            <version>3.5.1</version>-->
+        <!--        </dependency>-->
+        <!--
+            主题包
+            使用 WebLookAndFeel.install(ModenaSkin.class)
+            其他主题 com.alee.skin包下 GitHub 地址 https://github.com/mgarin/weblaf
+         -->
+<!--        <dependency>-->
+<!--            <groupId>com.weblookandfeel</groupId>-->
+<!--            <artifactId>weblaf-ui</artifactId>-->
+<!--            <version>1.2.13</version>-->
+<!--        </dependency>-->
 
         <!-- lombok 工具 -->
         <dependency>
@@ -70,6 +105,25 @@
                     </execution>
                 </executions>
 
+            </plugin>
+            <plugin>
+                <groupId>com.googlecode.addjars-maven-plugin</groupId>
+                <artifactId>addjars-maven-plugin</artifactId>
+                <version>1.0.5</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>add-jars</goal>
+                        </goals>
+                        <configuration>
+                            <resources>
+                                <resource>
+                                    <directory>${basedir}/src/main/resources/lib</directory>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
            <!-- 打包的时候将参数配置添加到MANIFEST.MF文件中 -->
             <plugin>
