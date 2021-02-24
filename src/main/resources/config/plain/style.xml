@@ -2542,8 +2542,8 @@
             <opaque value="true"/>
             <color type="BACKGROUND" value="#57AAF1" />
             <color type="FOREGROUND" value="#FFFFFF" />
-
-            <string id="toolBarBackground">plain/images/toolBarBackground.png</string>
+            <!--暂时和Title一样的颜色图片-->
+            <string id="toolBarBackground">plain/images/internalFrameTitlePaneBackground_selected.png</string>
             <defaultsProperty key="Synthetica.toolBar.background" type="idref" value="toolBarBackground"/>
             <string id="toolBarBackground">plain/images/toolBarBackground4_inactive.png,plain/images/toolBarBackground3_inactive.png,plain/images/toolBarBackground2_inactive.png,plain/images/toolBarBackground_inactive.png</string>
             <defaultsProperty key="Synthetica.toolBar.background.inactive" type="idref" value="toolBarBackground"/>

@@ -127,6 +127,9 @@ public class IndexWin extends JFrame {
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         // 获取JFrame的容器
         Container indexContainer = this.getContentPane();
+        // 设置导航栏(工具栏)
+        indexContainer.add(navigationBarPane(),BorderLayout.NORTH);
+        // 设置中部表和表字段等面板
         indexContainer.add(createTopContentSplitPane(), BorderLayout.CENTER);
         indexContainer.add(createButtons(), BorderLayout.SOUTH);
         this.addWindowListener(new WindowAdapter() {
@@ -142,6 +145,29 @@ public class IndexWin extends JFrame {
         });
         // 显示窗体
         this.setVisible(true);
+    }
+
+    /**
+     * 创建导航栏
+     * @return
+     */
+    public JPanel navigationBarPane() {
+        // 创建导航栏面板
+        JPanel navigationBarPane = new JPanel();
+        // 布局创建一行一列
+        navigationBarPane.setLayout(new GridLayout(1,1));
+        // 创建工具栏
+        JToolBar navigationBar = new JToolBar();
+        // 创建连接按钮
+        JButton connectButton = new JButton(IconUtil.MYSQL);
+        connectButton.setText("连接");
+        // 连接按钮添加到工具栏中
+        navigationBar.add(connectButton);
+        // 垂直对齐
+        navigationBar.setAlignmentX(0);
+        // 添加导航栏面板中
+        navigationBarPane.add(navigationBar);
+        return navigationBarPane;
     }
 
     /**
