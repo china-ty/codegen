@@ -38,7 +38,7 @@ public class WinGlobalSettingUtil {
     public static void initWinStyle() {
         try {
            // String[] lafs = new String[]{"de.javasoft.plaf.synthetica.SyntheticaPlainLookAndFeel", "javax.swing.plaf.metal.MetalLookAndFeel"};
-            String[] lafs = new String[]{"de.javasoft.plaf.synthetica.SyntheticaStandardLookAndFeel", "de.javasoft.plaf.synthetica.SyntheticaPlainLookAndFeel"};
+            String[] lafs = new String[]{"com.ty.codegen.ui.StandardLookAndFeel", "com.ty.codegen.ui.PlainLookAndFeel"};
             String[] li = new String[]{"Licensee=Jyloo Software", "LicenseRegistrationNumber=------", "Product=Synthetica", "LicenseType=For internal tests only", "ExpireDate=--.--.----", "MaxVersion=2.31.999"};
             UIManager.put("Synthetica.license.info", li);
             UIManager.put("Synthetica.license.key", "FFFCC94B-00A0D2E4-5FECE971-5D4FD24F");

@@ -244,17 +244,7 @@ public class IndexWin extends JFrame {
 
 
         // 创建数据库根节点
-        JTree tableTrees = new JTree(rootNode){
-            @Override
-            public JToolTip createToolTip() {
-                // 创建默认工具提示标签
-                JToolTip tip = super.createToolTip();
-                tip.setBackground(Color.BLACK);
-                // 取消边框(创建一个空边框)
-                tip.setBorder(BorderFactory.createEmptyBorder());
-                return tip;
-            }
-        };
+        JTree tableTrees = new JTree(rootNode);
         // tableTrees.setEnabled(false);
         // 设置对数据表节点的相关鼠标的监听(查询表相关的字段属性等功能)
         tableTrees.addMouseListener(new TableTreeMouseEventAdapter(tableTrees, tableModel));
@@ -266,7 +256,7 @@ public class IndexWin extends JFrame {
                                                           boolean hasFocus) {
                 String toolTipText = tableNameMap.get(value.toString());
                 toolTipText = (toolTipText == null || toolTipText.length() <=  0) ? value.toString() : toolTipText;
-                tree.setToolTipText("<html><div height='17px'><font color='white'>" + toolTipText + "</font></div></html>");
+                tree.setToolTipText(toolTipText);
                 return super.getTreeCellRendererComponent(tree, value, sel,
                         expanded, leaf, row, hasFocus);
             }

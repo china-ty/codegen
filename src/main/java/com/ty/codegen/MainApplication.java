@@ -3,9 +3,7 @@ package com.ty.codegen;
 import com.ty.codegen.util.WinGlobalSettingUtil;
 import com.ty.codegen.win.IndexWin;
 
-import java.awt.*;
 import java.sql.*;
-import java.util.List;
 import java.util.*;
 
 /**
@@ -14,8 +12,6 @@ import java.util.*;
 public class MainApplication {
 
     public static void main(String[] args) {
-        // 全局设置字体样式
-        WinGlobalSettingUtil.initGlobalFont(new Font("新宋体", Font.PLAIN, 14));
         // 设置所有窗体样式风格
         WinGlobalSettingUtil.initWinStyle();
         try {
