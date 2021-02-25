@@ -2528,7 +2528,8 @@
         <string id="toolBarHandleY">plain/images/toolBarHandle.png</string>
         <defaultsProperty key="Synthetica.toolBar.handle.image.y" type="idref" value="toolBarHandleY"/>
         <defaultsProperty key="Synthetica.toolBar.handle.image.insets" type="insets" value="0 0 0 0"/>
-        <defaultsProperty key="Synthetica.toolBar.handle.size" type="integer" value="9"/>
+        <!--设置导航栏(工具栏)最左边是否可拖动的大小-->
+        <defaultsProperty key="Synthetica.toolBar.handle.size" type="integer" value="0"/>
         <defaultsProperty key="Synthetica.toolBar.handle.image.x.tiled" type="boolean" value="true"/>
         <defaultsProperty key="Synthetica.toolBar.handle.image.y.tiled" type="boolean" value="true"/>
 

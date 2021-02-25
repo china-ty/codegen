@@ -1,7 +1,7 @@
 package com.ty.codegen.win;
 
-import com.ty.codegen.event.TableFieldScrollPaneMouseEventAdapter;
 import com.ty.codegen.event.TableFieldEventAdapter;
+import com.ty.codegen.event.TableFieldScrollPaneMouseEventAdapter;
 import com.ty.codegen.event.TableTreeMouseEventAdapter;
 import com.ty.codegen.proxy.ServiceProxy;
 import com.ty.codegen.service.TableService;
@@ -125,6 +125,8 @@ public class IndexWin extends JFrame {
         this.setBounds(400, 150, 600, 500);
         // 当关闭窗体时同时关闭程序和进程
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        // 添加菜单栏
+        this.setJMenuBar(setupMenuBar());
         // 获取JFrame的容器
         Container indexContainer = this.getContentPane();
         // 设置导航栏(工具栏)
@@ -148,6 +150,58 @@ public class IndexWin extends JFrame {
     }
 
     /**
+     * 设置菜单栏
+     * @return
+     */
+    public JMenuBar setupMenuBar() {
+        // 创建菜单栏
+        JMenuBar menuBar = new JMenuBar();
+        // 创建菜单
+        JMenu fileMenu = new JMenu("文件");
+
+        // 创建文件菜单中的菜单项
+        JMenuItem openMenuItem = new JMenuItem("打开");
+        JMenuItem saveMenuItem = new JMenuItem("保存");
+        JMenuItem exitMenuItem = new JMenuItem("退出");
+        // 复选菜单
+        JCheckBoxMenuItem checkBoxMenuItem1 = new JCheckBoxMenuItem("复选框子菜单案例1");
+        JCheckBoxMenuItem checkBoxMenuItem2 = new JCheckBoxMenuItem("复选框子菜单案例2");
+        // 单选菜单
+        JRadioButtonMenuItem radioButtonMenuItem01 = new JRadioButtonMenuItem("单选按钮子菜单案例1");
+        JRadioButtonMenuItem radioButtonMenuItem02 = new JRadioButtonMenuItem("单选按钮子菜单案例2");
+
+        // 菜单项添加到菜单中
+        fileMenu.add(openMenuItem);
+        fileMenu.add(saveMenuItem);
+
+        // 添加分割线(添加到哪里与代码顺序有关)
+        fileMenu.addSeparator();
+
+        fileMenu.add(checkBoxMenuItem1);
+        fileMenu.add(checkBoxMenuItem2);
+
+        // 添加分割线(添加到哪里与代码顺序有关)
+        fileMenu.addSeparator();
+
+        fileMenu.add(radioButtonMenuItem01);
+        fileMenu.add(radioButtonMenuItem02);
+
+        // 添加分割线(添加到哪里与代码顺序有关)
+        fileMenu.addSeparator();
+
+        fileMenu.add(exitMenuItem);
+
+        // 将两个单选菜单进行绑定
+        ButtonGroup radioButtonGroup = new ButtonGroup();
+        radioButtonGroup.add(radioButtonMenuItem01);
+        radioButtonGroup.add(radioButtonMenuItem02);
+
+        // 将菜单添加到菜单栏中
+        menuBar.add(fileMenu);
+        return menuBar;
+    }
+
+    /**
      * 创建导航栏
      * @return
      */
@@ -156,7 +210,7 @@ public class IndexWin extends JFrame {
         JPanel navigationBarPane = new JPanel();
         // 布局创建一行一列
         navigationBarPane.setLayout(new GridLayout(1,1));
-        // 创建工具栏
+        // 创建工具栏 这里的高就用按图片的大小来决定吧
         JToolBar navigationBar = new JToolBar();
         // 创建连接按钮
         JButton connectButton = new JButton(IconUtil.MYSQL);
