@@ -215,6 +215,8 @@ public class IndexWin extends JFrame {
         // 创建连接按钮
         JButton connectButton = new JButton(IconUtil.MYSQL);
         connectButton.setText("连接");
+        // 创建连接窗体
+        connectButton.addActionListener(e -> ConnectWin.instance());
         // 连接按钮添加到工具栏中
         navigationBar.add(connectButton);
         // 垂直对齐
