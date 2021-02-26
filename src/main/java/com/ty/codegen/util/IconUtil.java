@@ -22,6 +22,8 @@ public class IconUtil {
 
     public static final Icon MYSQL = load("mysql.png");
     public static final Icon TABLE = load("table.png");
+    public static final Icon REFRESH = load("refresh.png");
+    public static final Icon DISCONNECTED = load("disconnected.png");
     /**
      * 加载图片资源
      *

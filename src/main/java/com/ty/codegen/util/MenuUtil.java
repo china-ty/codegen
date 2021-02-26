@@ -24,9 +24,7 @@ public class MenuUtil {
      */
     public static List<JMenuItem> createDefaultMouseRightShortcutMenuButton(MouseEvent mouseEvent, Component component){
         JMenuItem refreshMenItem = new JMenuItem();
-        // TODO 更改刷新图标
-        refreshMenItem.setIcon(IconUtil.TABLE);
-        refreshMenItem.setFont(new Font("新宋体", Font.PLAIN, 10));
+        refreshMenItem.setIcon(IconUtil.REFRESH);
         refreshMenItem.setText("刷新");
         List<JMenuItem> menuItemList = Arrays.asList(refreshMenItem);
         createMouseRightShortcutMenuButton(mouseEvent,component,menuItemList);

@@ -213,8 +213,10 @@ public class IndexWin extends JFrame {
         // 创建工具栏 这里的高就用按图片的大小来决定吧
         JToolBar navigationBar = new JToolBar();
         // 创建连接按钮
-        JButton connectButton = new JButton(IconUtil.MYSQL);
+        JButton connectButton = new JButton(IconUtil.DISCONNECTED);
         connectButton.setText("连接");
+        // 设置文字的位置
+        // connectButton.setVerticalTextPosition(JButton.BOTTOM);
         // 创建连接窗体
         connectButton.addActionListener(e -> ConnectWin.instance());
         // 连接按钮添加到工具栏中

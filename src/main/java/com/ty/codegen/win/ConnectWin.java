@@ -1,9 +1,11 @@
 package com.ty.codegen.win;
 
+import com.ty.codegen.enums.DatabaseTypeEnum;
+import com.ty.codegen.enums.TextFieldTypeEnum;
+import com.ty.codegen.event.TextFieldKeyAdapter;
+
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
 
 /**
  * @Project: codegen
@@ -57,11 +59,23 @@ public class ConnectWin extends JDialog {
         int textWidth = 130;
         // 输入框的高度
         int textHeight = labelHeight;
+        JLabel databaseLabel = new JLabel("数据库:");
+        databaseLabel.setBounds(labelX,Y,labelWidth,labelHeight);
+        // 获取系统支持的所有数据库集合
+        String[] databaseList = DatabaseTypeEnum.toStringArray();
+        // 创建一个下拉列表框
+        JComboBox<String> databaseComboBox = new JComboBox<String>(databaseList);
+        databaseComboBox.setBounds(textX,Y,textWidth,textHeight);
+        // 默认选中下标为0的项
+        databaseComboBox.setSelectedItem(0);
+        // 计算下一行的Y坐标
+        Y = Y + labelHeight + spacing;
         // 连接名
         JLabel linkNameLabel = new JLabel("连接名:");
         linkNameLabel.setBounds(labelX,Y,labelWidth,labelHeight);
         JTextField linkNameText = new JTextField();
         linkNameText.setBounds(textX,Y,textWidth,textHeight);
+        linkNameText.addKeyListener(new TextFieldKeyAdapter(5));
         // 计算下一行的Y坐标
         Y = Y + labelHeight + spacing;
         // 主机
@@ -69,6 +83,7 @@ public class ConnectWin extends JDialog {
         hostAddressLabel.setBounds(labelX,Y,labelWidth,labelHeight);
         JTextField hostAddressText = new JTextField();
         hostAddressText.setBounds(textX,Y,textWidth,textHeight);
+        hostAddressText.addKeyListener(new TextFieldKeyAdapter(15));
 
         Y = Y + labelHeight + spacing;
         // 端口号
@@ -76,15 +91,7 @@ public class ConnectWin extends JDialog {
         portLabel.setBounds(labelX,Y,labelWidth,labelHeight);
         JTextField portText = new JTextField("3306");
         portText.setBounds(textX,Y,textWidth,textHeight);
-        portText.addKeyListener(new KeyAdapter(){
-            @Override
-            public void keyTyped(KeyEvent e) {
-                String key="0123456789"+(char)8;
-                if(key.indexOf(e.getKeyChar())<0){
-                    e.consume();//如果不是数字则取消
-                }
-            }
-        });
+        portText.addKeyListener(new TextFieldKeyAdapter(TextFieldTypeEnum.NUMBER,8));
 
         Y = Y + labelHeight + spacing;
         // 用户名
@@ -92,6 +99,7 @@ public class ConnectWin extends JDialog {
         userNameLabel.setBounds(labelX,Y,labelWidth,labelHeight);
         JTextField userNameText = new JTextField();
         userNameText.setBounds(textX,Y,textWidth,textHeight);
+        userNameText.addKeyListener(new TextFieldKeyAdapter(20));
 
         Y = Y + labelHeight + spacing;
         // 密码
@@ -99,8 +107,12 @@ public class ConnectWin extends JDialog {
         passwordLabel.setBounds(labelX,Y,labelWidth,labelHeight);
         JPasswordField passwordText = new JPasswordField();
         passwordText.setBounds(textX,Y,textWidth,textHeight);
+        userNameText.addKeyListener(new TextFieldKeyAdapter(20));
 
         // 将这些组件添加到窗体面板中
+        contentPane.add(databaseLabel);
+        contentPane.add(databaseComboBox);
+
         contentPane.add(linkNameLabel);
         contentPane.add(linkNameText);
 
