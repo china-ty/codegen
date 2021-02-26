@@ -6,6 +6,8 @@ import com.ty.codegen.event.TextFieldKeyAdapter;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 /**
  * @Project: codegen
@@ -17,25 +19,54 @@ import java.awt.*;
  **/
 public class ConnectWin extends JDialog {
     private static ConnectWin connectWin;
+    // 主程序的位置坐标
+    private static Point indexWinPoint;
+    // 主程序的屏幕大小
+    private static Dimension indexWinDimension;
 
-    public static ConnectWin instance(){
-        if ( ConnectWin.connectWin != null ) {
-            ConnectWin.connectWin.setVisible(true);
-        } else {
-            ConnectWin connectWin = new ConnectWin();
-            ConnectWin.connectWin =  connectWin;
-            ConnectWin.connectWin.setVisible(true);
-        }
+    /**
+     * 创建新建连接窗体
+     *
+     * @param indexWinDimension
+     * @return
+     */
+    public static ConnectWin instance(Point indexWinPoint, Dimension indexWinDimension) {
+        ConnectWin.indexWinDimension = indexWinDimension;
+        ConnectWin.indexWinPoint = indexWinPoint;
+        ConnectWin.connectWin = new ConnectWin();
         return ConnectWin.connectWin;
     }
 
-    private ConnectWin()  {
+    private ConnectWin() {
         // 初始化创建新连接窗体
         this.init();
         // 初始化组件
         this.setupComponent();
         // 显示窗体
         this.setVisible(true);
+    }
+
+    private void init() {
+        this.setTitle("新建连接");
+        // 获取主程序坐标
+        int x = (int) ConnectWin.indexWinPoint.getX();
+        int y = (int) ConnectWin.indexWinPoint.getY();
+        // 获取主程序大小
+        int width = ConnectWin.indexWinDimension.width;
+        int height = ConnectWin.indexWinDimension.height;
+        this.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                // 清空窗体所有数据
+                ConnectWin.connectWin = null;
+            }
+        });
+        // 设置窗体大小
+        this.setSize(300, 400);
+        // 设置窗体位置
+        this.setLocation((x + (width / 2)) - (this.getWidth() / 2), (y + (height / 2)) - (this.getHeight() / 2));
+        // 禁止调整窗体大小
+        this.setResizable(false);
     }
 
     private void setupComponent() {
@@ -60,53 +91,53 @@ public class ConnectWin extends JDialog {
         // 输入框的高度
         int textHeight = labelHeight;
         JLabel databaseLabel = new JLabel("数据库:");
-        databaseLabel.setBounds(labelX,Y,labelWidth,labelHeight);
+        databaseLabel.setBounds(labelX, Y, labelWidth, labelHeight);
         // 获取系统支持的所有数据库集合
         String[] databaseList = DatabaseTypeEnum.toStringArray();
         // 创建一个下拉列表框
         JComboBox<String> databaseComboBox = new JComboBox<String>(databaseList);
-        databaseComboBox.setBounds(textX,Y,textWidth,textHeight);
+        databaseComboBox.setBounds(textX, Y, textWidth, textHeight);
         // 默认选中下标为0的项
         databaseComboBox.setSelectedItem(0);
         // 计算下一行的Y坐标
         Y = Y + labelHeight + spacing;
         // 连接名
         JLabel linkNameLabel = new JLabel("连接名:");
-        linkNameLabel.setBounds(labelX,Y,labelWidth,labelHeight);
+        linkNameLabel.setBounds(labelX, Y, labelWidth, labelHeight);
         JTextField linkNameText = new JTextField();
-        linkNameText.setBounds(textX,Y,textWidth,textHeight);
+        linkNameText.setBounds(textX, Y, textWidth, textHeight);
         linkNameText.addKeyListener(new TextFieldKeyAdapter(5));
         // 计算下一行的Y坐标
         Y = Y + labelHeight + spacing;
         // 主机
         JLabel hostAddressLabel = new JLabel("主机:");
-        hostAddressLabel.setBounds(labelX,Y,labelWidth,labelHeight);
+        hostAddressLabel.setBounds(labelX, Y, labelWidth, labelHeight);
         JTextField hostAddressText = new JTextField();
-        hostAddressText.setBounds(textX,Y,textWidth,textHeight);
+        hostAddressText.setBounds(textX, Y, textWidth, textHeight);
         hostAddressText.addKeyListener(new TextFieldKeyAdapter(15));
 
         Y = Y + labelHeight + spacing;
         // 端口号
         JLabel portLabel = new JLabel("端口号:");
-        portLabel.setBounds(labelX,Y,labelWidth,labelHeight);
+        portLabel.setBounds(labelX, Y, labelWidth, labelHeight);
         JTextField portText = new JTextField("3306");
-        portText.setBounds(textX,Y,textWidth,textHeight);
-        portText.addKeyListener(new TextFieldKeyAdapter(TextFieldTypeEnum.NUMBER,8));
+        portText.setBounds(textX, Y, textWidth, textHeight);
+        portText.addKeyListener(new TextFieldKeyAdapter(TextFieldTypeEnum.NUMBER, 8));
 
         Y = Y + labelHeight + spacing;
         // 用户名
         JLabel userNameLabel = new JLabel("用户名:");
-        userNameLabel.setBounds(labelX,Y,labelWidth,labelHeight);
+        userNameLabel.setBounds(labelX, Y, labelWidth, labelHeight);
         JTextField userNameText = new JTextField();
-        userNameText.setBounds(textX,Y,textWidth,textHeight);
+        userNameText.setBounds(textX, Y, textWidth, textHeight);
         userNameText.addKeyListener(new TextFieldKeyAdapter(20));
 
         Y = Y + labelHeight + spacing;
         // 密码
         JLabel passwordLabel = new JLabel("密码:");
-        passwordLabel.setBounds(labelX,Y,labelWidth,labelHeight);
+        passwordLabel.setBounds(labelX, Y, labelWidth, labelHeight);
         JPasswordField passwordText = new JPasswordField();
-        passwordText.setBounds(textX,Y,textWidth,textHeight);
+        passwordText.setBounds(textX, Y, textWidth, textHeight);
         userNameText.addKeyListener(new TextFieldKeyAdapter(20));
 
         // 将这些组件添加到窗体面板中
@@ -127,12 +158,5 @@ public class ConnectWin extends JDialog {
 
         contentPane.add(passwordLabel);
         contentPane.add(passwordText);
-    }
-
-    private void init() {
-        this.setTitle("新建连接");
-        this.setBounds(300,100,300,400);
-        // 禁止调整窗体大小
-        this.setResizable(false);
     }
 }

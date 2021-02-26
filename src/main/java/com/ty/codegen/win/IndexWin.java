@@ -120,9 +120,12 @@ public class IndexWin extends JFrame {
     private void init() throws Exception {
         // 设置窗体标题
         this.setTitle("代码生成器");
-        // this.setLayout(new BorderLayout(0,0));
+        // 得到显示器屏幕的宽高
+        int width = Toolkit.getDefaultToolkit().getScreenSize().width;
+        int height = Toolkit.getDefaultToolkit().getScreenSize().height;
         // 设置窗体大小和位置
-        this.setBounds(400, 150, 600, 500);
+        this.setSize(600,500);
+        this.setLocation((width - this.getWidth()) / 2, (height - this.getHeight()) / 2);
         // 当关闭窗体时同时关闭程序和进程
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         // 添加菜单栏
@@ -218,7 +221,7 @@ public class IndexWin extends JFrame {
         // 设置文字的位置
         // connectButton.setVerticalTextPosition(JButton.BOTTOM);
         // 创建连接窗体
-        connectButton.addActionListener(e -> ConnectWin.instance());
+        connectButton.addActionListener(e -> ConnectWin.instance(this.getLocation(),this.getSize()));
         // 连接按钮添加到工具栏中
         navigationBar.add(connectButton);
         // 垂直对齐
