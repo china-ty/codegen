@@ -8,10 +8,11 @@ import java.text.ParseException;
  * @Project: codegen
  * @ClassName: PlainLookAndFeel
  * @Author: ty
- * @Description: 白色主题风格
+ * @Description: 白色主题风格(重写) 移除
  * @Date: 2021/2/3
  * @Version: 1.0
  **/
+@Deprecated
 public class PlainLookAndFeel extends SyntheticaLookAndFeel {
 
 

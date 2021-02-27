@@ -1,5 +1,7 @@
 package com.ty.codegen.util;
 
+import de.javasoft.plaf.synthetica.SyntheticaLookAndFeel;
+
 import javax.swing.*;
 import javax.swing.plaf.FontUIResource;
 import java.awt.*;
@@ -38,12 +40,21 @@ public class WinGlobalSettingUtil {
     public static void initWinStyle() {
         try {
            // String[] lafs = new String[]{"de.javasoft.plaf.synthetica.SyntheticaPlainLookAndFeel", "javax.swing.plaf.metal.MetalLookAndFeel"};
-            String[] lafs = new String[]{"com.ty.codegen.ui.StandardLookAndFeel", "com.ty.codegen.ui.PlainLookAndFeel"};
-            String[] li = new String[]{"Licensee=Jyloo Software", "LicenseRegistrationNumber=------", "Product=Synthetica", "LicenseType=For internal tests only", "ExpireDate=--.--.----", "MaxVersion=2.31.999"};
+            String[] lafs = new String[]{"com.ty.codegen.ui.StandardLookAndFeel", "de.javasoft.plaf.synthetica.SyntheticaPlainLookAndFeel"};
+            String[] li = new String[]{"Licensee=Jyloo Software", "LicenseRegistrationNumber=------", "Product=Synthetica", "LicenseType=For internal tests only", "ExpireDate=--.--.----", "MaxVersion=2.32.999"};
             UIManager.put("Synthetica.license.info", li);
-            UIManager.put("Synthetica.license.key", "FFFCC94B-00A0D2E4-5FECE971-5D4FD24F");
+            UIManager.put("Synthetica.license.key", "23588378-2E48AC21-2654FBA8-E05135A0");
+            String[] li2 = new String[]{"Licensee=Jyloo Software", "LicenseRegistrationNumber=------", "Product=SyntheticaAddons", "LicenseType=For internal tests only", "ExpireDate=--.--.----", "MaxVersion=1.13.999"};
+            UIManager.put("SyntheticaAddons.license.info", li2);
+            UIManager.put("SyntheticaAddons.license.key", "C7D98D0B-FDDD0183-77B7ADAD-E253A0F5");
             UIManager.setLookAndFeel(lafs[1]);
-
+            // 统一设置字体
+            SyntheticaLookAndFeel.setFont("新宋体", 14);
+            // 设置导航栏(工具栏)最左边是否可拖动的大小
+            UIManager.put("Synthetica.toolBar.handle.size",0);
+            // 自定义参数值
+            // 如果要设置其它值 例 synth.xml 文件中  <defaultsProperty key="Synthetica.toolBar.background"> key就是 UIManager.put() 的key
+            // UIManager.put("Synthetica.toolBar.background","plain/images/internalFrameTitlePaneBackground_selected.png");
 
         } catch (Exception e) {
             // TODO Auto-generated catch block
