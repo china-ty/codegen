@@ -273,7 +273,7 @@ public class IndexWin extends JFrame {
         column.setCellEditor(tableField.getDefaultEditor(Boolean.class));
         column.setCellRenderer(tableField.getDefaultRenderer(Boolean.class));
         // 监听数据表格中数据是否改变事件
-        tableField.addMouseListener(new TableFieldEventAdapter(tableModel));
+        tableField.addMouseListener(new TableFieldEventAdapter());
         tableFieldScrollPane.setViewportView(tableField);
         // 添加表字段面板鼠标监听
         tableFieldScrollPane.addMouseListener(new TableFieldScrollPaneMouseEventAdapter());
@@ -334,7 +334,7 @@ public class IndexWin extends JFrame {
         JTree tableTrees = new JTree(rootNode);
         // tableTrees.setEnabled(false);
         // 设置对数据表节点的相关鼠标的监听(查询表相关的字段属性等功能)
-        tableTrees.addMouseListener(new TableTreeMouseEventAdapter(tableTrees, tableModel));
+        tableTrees.addMouseListener(new TableTreeMouseEventAdapter(tableModel));
         // 设置图标
         DefaultTreeCellRenderer renderer = new DefaultTreeCellRenderer(){
             @Override

@@ -11,11 +11,6 @@ import java.util.List;
 
 public class TableFieldEventAdapter extends MouseAdapter {
 
-    private TableModel tableModel;
-
-    public TableFieldEventAdapter(TableModel tableModel) {
-        this.tableModel = tableModel;
-    }
 
     /**
      * 鼠标选中事件
@@ -26,6 +21,7 @@ public class TableFieldEventAdapter extends MouseAdapter {
         System.out.println("我被选中了");
         // 获得源对象
         JTable table = (JTable) e.getSource();
+        TableModel model = table.getModel();
         ListSelectionModel selectionModel = table.getSelectionModel();
         if (selectionModel.isSelectionEmpty()) {
             JOptionPane.showMessageDialog(null, "未进行任何修改！");

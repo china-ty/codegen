@@ -1,16 +1,22 @@
 package com.ty.codegen.event;
 
-import com.ty.codegen.dao.TableDao;
 import com.ty.codegen.entity.TableField;
 import com.ty.codegen.service.TableService;
 import com.ty.codegen.service.impl.TableServiceImpl;
+import com.ty.codegen.util.IconUtil;
+import com.ty.codegen.util.MenuUtil;
+import com.ty.codegen.win.CodePreviewWin;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.tree.TreePath;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.util.Arrays;
 import java.util.List;
-import java.util.Vector;
+import java.util.Map;
 
 /**
  * 主窗体 左部 树型表 鼠标 事件 监听 适配器
@@ -19,12 +25,9 @@ public class TableTreeMouseEventAdapter extends MouseAdapter {
 
     private TableService tableService = new TableServiceImpl();
 
-    private JTree tableTrees;
-
     private DefaultTableModel tableModel;
 
-    public TableTreeMouseEventAdapter(JTree jTree, DefaultTableModel tableModel) {
-        this.tableTrees = jTree;
+    public TableTreeMouseEventAdapter(DefaultTableModel tableModel) {
         this.tableModel = tableModel;
     }
 
@@ -33,6 +36,7 @@ public class TableTreeMouseEventAdapter extends MouseAdapter {
         int clickCount = e.getClickCount();
         // 点击的数量等于2表示双击
         if (clickCount == 2) {
+            JTree tableTrees = (JTree) e.getComponent();
             this.clear(tableModel);
             // 获取选中的节点的名字
             String selectNodeName = tableTrees.getSelectionPath().getLastPathComponent().toString();
@@ -55,6 +59,48 @@ public class TableTreeMouseEventAdapter extends MouseAdapter {
                 // exception.printStackTrace();
             }
         }
+    }
+
+    /**
+     * 鼠标按下事件
+     * @param e
+     */
+    @Override
+    public void mousePressed(MouseEvent e) {
+        JTree tableTrees = (JTree) e.getComponent();
+        TreePath selectionPath = tableTrees.getSelectionPath();
+        // 未选中节点
+        if (selectionPath == null) {
+            return;
+        }
+        int selectionCount = tableTrees.getSelectionCount();
+        // 选择多个返回
+        if (selectionCount > 1) {
+            return;
+        }
+        String selectNodeName = selectionPath.getLastPathComponent().toString();
+        JMenuItem previewMenItem = new JMenuItem();
+        previewMenItem.setIcon(IconUtil.PREVIEW);
+        previewMenItem.setText("代码预览");
+        previewMenItem.addActionListener(item -> {
+            Map<String, CodePreviewWin> codePreviewWinCacheMap = CodePreviewWin.getCacheCodePreviewWin();
+            CodePreviewWin codePreviewWinCache = codePreviewWinCacheMap.get(selectNodeName);
+            if (codePreviewWinCache == null) {
+                CodePreviewWin codePreviewWin = new CodePreviewWin(selectNodeName);
+                codePreviewWin.addWindowListener(new WindowAdapter() {
+                    @Override
+                    public void windowClosing(WindowEvent e) {
+                        codePreviewWinCacheMap.remove(selectNodeName);
+                    }
+                });
+            } else {
+                // 将窗体设置在最前面(设置为活动窗口)
+                codePreviewWinCache.toFront();
+            }
+
+        });
+        List<JMenuItem> menuItemList = Arrays.asList(previewMenItem);
+        MenuUtil.createMouseRightShortcutMenuButton(e,tableTrees,menuItemList);
     }
 
     private void clear(DefaultTableModel tableModel) {

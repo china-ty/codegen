@@ -1,5 +1,7 @@
 package com.ty.codegen.util;
 
+import lombok.extern.slf4j.Slf4j;
+
 import javax.swing.*;
 import java.io.IOException;
 import java.io.InputStream;
@@ -12,6 +14,7 @@ import java.io.InputStream;
  * @Date: 2021/1/21
  * @Version: 1.0
  **/
+@Slf4j
 public class IconUtil {
 
     // 图片文件根路径
@@ -24,6 +27,8 @@ public class IconUtil {
     public static final Icon TABLE = load("table.png");
     public static final Icon REFRESH = load("refresh.png");
     public static final Icon DISCONNECTED = load("disconnected.png");
+    public static final Icon CODE = load("code.png");
+    public static final Icon PREVIEW = load("preview.png");
     /**
      * 加载图片资源
      *
@@ -45,7 +50,7 @@ public class IconUtil {
                 fileInputStream.close();
             }
         } catch (IOException e) {
-            System.out.println("加载系统图标资源失败!");
+            log.error("加载系统图标资源失败!");
             return imageIcon;
         }
         return imageIcon;
