@@ -1,6 +1,5 @@
 package com.ty.codegen.win;
 
-import com.ty.codegen.enums.DatabaseTypeEnum;
 import com.ty.codegen.enums.TextFieldTypeEnum;
 import com.ty.codegen.event.TextFieldKeyAdapter;
 
@@ -23,6 +22,8 @@ public class ConnectWin extends JDialog {
     private static Point indexWinPoint;
     // 主程序的屏幕大小
     private static Dimension indexWinDimension;
+    // 当前数据库类型
+    private static String databaseType;
 
     /**
      * 创建新建连接窗体
@@ -30,15 +31,22 @@ public class ConnectWin extends JDialog {
      * @param indexWinDimension
      * @return
      */
-    public static ConnectWin instance(Point indexWinPoint, Dimension indexWinDimension) {
-        ConnectWin.indexWinDimension = indexWinDimension;
-        ConnectWin.indexWinPoint = indexWinPoint;
-        ConnectWin.connectWin = new ConnectWin();
-        return ConnectWin.connectWin;
+    public static ConnectWin instance(String databaseType,Point indexWinPoint, Dimension indexWinDimension) {
+        if (ConnectWin.connectWin == null) {
+            ConnectWin.indexWinDimension = indexWinDimension;
+            ConnectWin.indexWinPoint = indexWinPoint;
+            ConnectWin.databaseType = databaseType;
+            ConnectWin.connectWin = new ConnectWin(databaseType);
+            return ConnectWin.connectWin;
+        } else {
+            return ConnectWin.connectWin;
+        }
+
     }
 
-    private ConnectWin() {
+    private ConnectWin(String databaseType) {
         // 初始化创建新连接窗体
+        this.setTitle(databaseType + " - 新建连接");
         this.init();
         // 初始化组件
         this.setupComponent();
@@ -47,7 +55,6 @@ public class ConnectWin extends JDialog {
     }
 
     private void init() {
-        this.setTitle("新建连接");
         // 获取主程序坐标
         int x = (int) ConnectWin.indexWinPoint.getX();
         int y = (int) ConnectWin.indexWinPoint.getY();
@@ -90,17 +97,7 @@ public class ConnectWin extends JDialog {
         int textWidth = 130;
         // 输入框的高度
         int textHeight = labelHeight;
-        JLabel databaseLabel = new JLabel("数据库:");
-        databaseLabel.setBounds(labelX, Y, labelWidth, labelHeight);
-        // 获取系统支持的所有数据库集合
-        String[] databaseList = DatabaseTypeEnum.toStringArray();
-        // 创建一个下拉列表框
-        JComboBox<String> databaseComboBox = new JComboBox<String>(databaseList);
-        databaseComboBox.setBounds(textX, Y, textWidth, textHeight);
-        // 默认选中下标为0的项
-        databaseComboBox.setSelectedItem(0);
-        // 计算下一行的Y坐标
-        Y = Y + labelHeight + spacing;
+
         // 连接名
         JLabel linkNameLabel = new JLabel("连接名:");
         linkNameLabel.setBounds(labelX, Y, labelWidth, labelHeight);
@@ -141,9 +138,6 @@ public class ConnectWin extends JDialog {
         userNameText.addKeyListener(new TextFieldKeyAdapter(20));
 
         // 将这些组件添加到窗体面板中
-        contentPane.add(databaseLabel);
-        contentPane.add(databaseComboBox);
-
         contentPane.add(linkNameLabel);
         contentPane.add(linkNameText);
 

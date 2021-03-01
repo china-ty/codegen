@@ -50,7 +50,6 @@ public class CodePreviewWin extends JFrame {
         this.setSize(900, 600);
         this.setLocation((width - this.getWidth()) / 2, (height - this.getHeight()) / 2);
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-this.setMaximumSize(new Dimension(1000, 800));
     }
 
     /**

@@ -7,8 +7,8 @@ import lombok.Getter;
  */
 @Getter
 public enum DatabaseTypeEnum {
-    // Mysql数据库
-    MYSQL("Mysql"),
+    // MySql数据库
+    MYSQL("MySql"),
     // Oracle数据库
     ORACLE("Oracle");
 

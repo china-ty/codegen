@@ -1,5 +1,6 @@
 package com.ty.codegen.win;
 
+import com.ty.codegen.enums.DatabaseTypeEnum;
 import com.ty.codegen.event.TableFieldEventAdapter;
 import com.ty.codegen.event.TableFieldScrollPaneMouseEventAdapter;
 import com.ty.codegen.event.TableTreeMouseEventAdapter;
@@ -8,6 +9,7 @@ import com.ty.codegen.service.TableService;
 import com.ty.codegen.service.impl.TableServiceImpl;
 import com.ty.codegen.util.IconUtil;
 import com.ty.codegen.util.MysqlDBUtil;
+import de.javasoft.swing.SimpleDropDownButton;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -216,14 +218,32 @@ public class IndexWin extends JFrame {
         // 创建工具栏 这里的高就用按图片的大小来决定吧
         JToolBar navigationBar = new JToolBar();
         // 创建连接按钮
-        JButton connectButton = new JButton(IconUtil.DISCONNECTED);
-        connectButton.setText("连接");
-        // 设置文字的位置
-        // connectButton.setVerticalTextPosition(JButton.BOTTOM);
-        // 创建连接窗体
-        connectButton.addActionListener(e -> ConnectWin.instance(this.getLocation(),this.getSize()));
+        SimpleDropDownButton disconnectedButton = new SimpleDropDownButton("连接");
+        disconnectedButton.setIcon(IconUtil.DISCONNECTED);
+        JPopupMenu disconnectedPopupMenu = disconnectedButton.getPopupMenu();
+        // 获取系统支持的数据库类型
+        DatabaseTypeEnum[] databaseTypeArray = DatabaseTypeEnum.values();
+        for (int i = 0; i < databaseTypeArray.length; i++) {
+            JMenuItem databaseType = new JMenuItem(databaseTypeArray[i].getType());
+            // 添加单击监听事件 创建连接窗体
+            databaseType.addActionListener(e -> {
+                ConnectWin connectWin = ConnectWin.instance(((JMenuItem) e.getSource()).getText(), this.getLocation(), this.getSize());
+                // 将窗体设置在最前面(设置为活动窗口)
+                connectWin.toFront();
+            });
+            disconnectedPopupMenu.add(databaseType);
+        }
+        // 设置小的箭头
+        disconnectedButton.setUseSmallArrowIcon(false);
+        // 设置下拉监听与图片的距离
+        disconnectedButton.setArrowIconSpace(5);
+        // 设置文本在图片下方
+        // 设置文本水平居中
+        disconnectedButton.setHorizontalTextPosition(JButton.CENTER);
+        // 设置文本垂直底部
+        disconnectedButton.setVerticalTextPosition(JButton.BOTTOM);
         // 连接按钮添加到工具栏中
-        navigationBar.add(connectButton);
+        navigationBar.add(disconnectedButton);
         // 垂直对齐
         navigationBar.setAlignmentX(0);
         // 添加导航栏面板中
