@@ -2,34 +2,40 @@ package com.ty.codegen;
 
 import com.ty.codegen.util.WinGlobalSettingUtil;
 import com.ty.codegen.win.IndexWin;
+import lombok.extern.slf4j.Slf4j;
 
+import java.awt.*;
 import java.sql.*;
+import java.util.List;
 import java.util.*;
 
 /**
  * 程序启动类
  */
+@Slf4j
 public class MainApplication {
 
     public static void main(String[] args) {
         // 设置所有窗体样式风格
         WinGlobalSettingUtil.initWinStyle();
-        try {
-            new IndexWin();
-        } catch (Exception e) {
-            System.out.println("项目启动失败");
-            e.printStackTrace();
-        }
-//        MysqlDBUtil mysqlDBUtil = new MysqlDBUtil();
-//        try {
-//            Connection conn = mysqlDBUtil.getConn();
-//            Statement statement = conn.createStatement();
-//            //getColNames(statement.executeQuery("select * from person"));
-//            getTables(conn);
-//        } catch (SQLException throwables) {
-//            throwables.printStackTrace();
-//        }
-
+//      EventQueue.invokeLater()方式启动说明 参考
+//      Swing的显示是不会响应的，如果执行时间长，甚至会像死机一样没有响应。原因是该函数和主函数的执行处于同一
+//      线程上，该函数的执行占用了CPU的执行时间片。因此，建议所有需要同步显示结果的同行们用如下格式调用（原理重新开启一个线程）
+//      使用该方式的原因是：
+//      1）图像文件查看器viewer使用的是Swing组件，而Swing是线程不安全的，是单线程的设计，所以只能从事件派发
+//      线程访问将要在屏幕上绘制的Swing组件，从而保证组件状态的可确定性。
+//      2）使用EventQueue.invokeLater()好处是显而易见的，这个方法调用完毕后，它会被销毁，因为匿名内部类是作
+//      为临时变量存在的，给它分配的内存在此时会被释放。这个对于只需要在一个地方使用时可以节省内存，而且这个
+//      类是不可以被其它的方法或类使用的，只能被EventQueue.invokeLater()来使用。但如果你需要一个在很多地方都
+//      能用到的类，而不是只在某一个类里面或者方法里用的话，定义成匿名内部类显然是不可取的。
+        EventQueue.invokeLater(() -> {
+            try {
+                new IndexWin();
+            } catch (Exception e) {
+                log.error("程序启动失败");
+                e.printStackTrace();
+            }
+        });
     }
 
     // --------------------------------以下是获取表的字段属性 代码样例 需要结合本项目的来改造--------------------------------------------------

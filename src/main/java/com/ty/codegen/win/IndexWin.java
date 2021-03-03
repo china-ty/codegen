@@ -9,7 +9,11 @@ import com.ty.codegen.service.TableService;
 import com.ty.codegen.service.impl.TableServiceImpl;
 import com.ty.codegen.util.IconUtil;
 import com.ty.codegen.util.MysqlDBUtil;
+import de.javasoft.swing.JYDockingPort;
+import de.javasoft.swing.JYDockingView;
 import de.javasoft.swing.SimpleDropDownButton;
+import de.javasoft.swing.plaf.jydocking.DefaultFloatAction;
+import de.javasoft.swing.plaf.jydocking.DefaultMaximizeAction;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -44,9 +48,12 @@ public class IndexWin extends JFrame {
     private TableService tableService = ServiceProxy.proxyPowerful(new TableServiceImpl());
 
     public IndexWin() throws Exception {
-        // 主窗体组件和数据初始化
+        // 主窗体组件和数据加载
         loading();
+        // 窗体初始化组件
         init();
+        // 显示窗体
+        this.setVisible(true);
     }
 
     private void loading() {
@@ -137,7 +144,7 @@ public class IndexWin extends JFrame {
         // 设置导航栏(工具栏)
         indexContainer.add(navigationBarPane(),BorderLayout.NORTH);
         // 设置中部表和表字段等面板
-        indexContainer.add(createTopContentSplitPane(), BorderLayout.CENTER);
+        indexContainer.add(createCenterPane(), BorderLayout.CENTER);
         indexContainer.add(createButtons(), BorderLayout.SOUTH);
         this.addWindowListener(new WindowAdapter() {
             @Override
@@ -150,8 +157,6 @@ public class IndexWin extends JFrame {
             }
 
         });
-        // 显示窗体
-        this.setVisible(true);
     }
 
     /**
@@ -252,31 +257,31 @@ public class IndexWin extends JFrame {
     }
 
     /**
-     * 创建顶部分割面板(左 表名的展示 右 表的字段展示)
-     * @return
+     * 创建对接视图(左 表名的展示 右 表的字段展示)
+     * @return {@link JPanel}
      */
-    private JSplitPane createTopContentSplitPane() throws SQLException{
-        // 创建一个分割容器面板(左右布局)
-        JSplitPane contentSplitPane = new JSplitPane();
-        // 让分割线禁用出箭头
-        contentSplitPane.setOneTouchExpandable(false);
-        // 操作分割箭头,重绘图形(这样流畅一些)
-        contentSplitPane.setContinuousLayout(true);
-        // 设置分割线的粗细
-        contentSplitPane.setDividerSize(2);
-        // 设置分割线方向 左右分布(默认)  JSplitPane.VERTICAL_SPLIT:上下分布
-        contentSplitPane.setOrientation(JSplitPane.HORIZONTAL_SPLIT);
-        // 设置分割线位于窗体的位置
-        contentSplitPane.setDividerLocation(170);
+    private JPanel createCenterPane() throws SQLException{
         // 设置左边的组件(数据库名和所有表名)
-        contentSplitPane.setLeftComponent(createLeftTableNames(this.getY()));
+        JYDockingView tableDockingView = createLeftTableNames();
         // 设置右边的组件(表的字段信息)
-        contentSplitPane.setRightComponent(createPane());
-        return contentSplitPane;
+        JYDockingView tableFieldDockingView = createRightTableFieldInfo();
+        // 创建整体面板
+        JPanel centerPanel = new JPanel(new BorderLayout(0,0));
+        // 将tableDockingView和tableFieldDockingView进行整理合并
+        JYDockingPort dockingPort = new JYDockingPort();
+        dockingPort.dock(tableFieldDockingView);
+        // 将tableDockingView设置在tableFieldDockingView的西部(左边)
+        tableFieldDockingView.dock(tableDockingView, "WEST", 0.3F);
+        // 设置居中布局
+        centerPanel.add(dockingPort, BorderLayout.CENTER);
+        return centerPanel;
     }
 
-    private JScrollPane createPane() {
-        JScrollPane tableFieldScrollPane = new JScrollPane();
+    /**
+     * 创建右部表字段信息对接视图
+     * @return {@link JYDockingView}
+     */
+    private JYDockingView createRightTableFieldInfo() {
         // 表头（列名）
         Object[] columnNames = {"字段名", "db类型", "Java类型", "长度", "小数点", "是否必填", "注释"};
         // 设置头标题
@@ -294,10 +299,21 @@ public class IndexWin extends JFrame {
         column.setCellRenderer(tableField.getDefaultRenderer(Boolean.class));
         // 监听数据表格中数据是否改变事件
         tableField.addMouseListener(new TableFieldEventAdapter());
+        // 创建对接视图
+        JYDockingView tableFieldDockingView = new JYDockingView("tableFieldDockingView", "字段信息", "tableFieldDockingView");
+        // 添加滚动面板
+        JScrollPane tableFieldScrollPane = new JScrollPane();
         tableFieldScrollPane.setViewportView(tableField);
         // 添加表字段面板鼠标监听
         tableFieldScrollPane.addMouseListener(new TableFieldScrollPaneMouseEventAdapter());
-        return tableFieldScrollPane;
+        // 设置边界布局让里面的组件全屏
+        tableFieldDockingView.setLayout(new BorderLayout());
+        // 将滑动面板添加到表对接视图中
+        tableFieldDockingView.add(tableFieldScrollPane);
+        tableFieldDockingView.setTerritoryBlocked(BorderLayout.CENTER, true);
+        // 添加对接视图放大功能
+        tableFieldDockingView.addAction(new DefaultMaximizeAction(tableFieldDockingView));
+        return tableFieldDockingView;
     }
 
     private JPanel createButtons() {
@@ -318,22 +334,10 @@ public class IndexWin extends JFrame {
     }
 
     /**
-     * 创建左部数据库和所有表名树形节点
-     *
-     *
-     * @param height 设置面板高度
-     * @return JScrollPane
+     * 创建左部数据库和所有表名对接视图
+     * @return {@link JYDockingView}
      */
-    private JScrollPane createLeftTableNames(final int height) throws SQLException {
-        // 添加滚动面板  默认 水平滚动和垂直滚动 都是需要时才显示的
-        JScrollPane tablesScrollPanel = new JScrollPane();
-        // 取消水平滚动显示
-        tablesScrollPanel.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-        //tablesPanel.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
-        // 设置滚动面板的宽度
-        final int tablesPanelWidth = 170;
-        // 设置滚动面板的大小
-        tablesScrollPanel.setPreferredSize(new Dimension(tablesPanelWidth, height));
+    private JYDockingView createLeftTableNames() throws SQLException {
         // 获取数据库名
         String databaseName = tableService.databaseName();
         // 设置根节点(数据库名)
@@ -348,8 +352,6 @@ public class IndexWin extends JFrame {
             tableNode = new DefaultMutableTreeNode(entry.getKey(), false);
             rootNode.add(tableNode);
         }
-
-
         // 创建数据库根节点
         JTree tableTrees = new JTree(rootNode);
         // tableTrees.setEnabled(false);
@@ -378,10 +380,21 @@ public class IndexWin extends JFrame {
         tableTrees.setCellRenderer(renderer);
         // 设置子节点与子节点直接的高度(间隙)
         tableTrees.setRowHeight(22);
+        // 添加滚动面板  默认 水平滚动和垂直滚动 都是需要时才显示的
+        JScrollPane tablesScrollPanel = new JScrollPane();
         // setViewportView设置滚动显示视图内容组件 这里不能直接使用add
         tablesScrollPanel.setViewportView(tableTrees);
-        return tablesScrollPanel;
+        // 取消水平滚动显示
+        tablesScrollPanel.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        // 创建表对接视图
+        JYDockingView tableDockingView = new JYDockingView("tableDockingView", "数据库信息", "tableDockingView");
+        // 设置边界布局让里面的组件全屏
+        tableDockingView.setLayout(new BorderLayout());
+        // 添加可以脱离主窗体功能
+        tableDockingView.addAction(new DefaultFloatAction(tableDockingView));
+        // 将滑动面板添加到表对接视图中
+        tableDockingView.add(tablesScrollPanel);
+        return tableDockingView;
     }
-
 
 }

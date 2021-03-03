@@ -52,6 +52,12 @@ public class WinGlobalSettingUtil {
             SyntheticaLookAndFeel.setFont("新宋体", 14);
             // 设置导航栏(工具栏)最左边是否可拖动的大小
             UIManager.put("Synthetica.toolBar.handle.size",0);
+            // JYDocking 参数 设置中文工具提示
+            UIManager.put("JYDocking.titlebar.minimizeButton.toolTip" , "最小化");
+            UIManager.put("JYDocking.titlebar.maximizeButton.toolTip", "最大化");
+            UIManager.put("JYDocking.titlebar.floatButton.toolTip", "脱离");
+            UIManager.put("JYDocking.titlebar.floatButton.selected.toolTip", "还原");
+            UIManager.put("JYDocking.titlebar.maximizeButton.selected.toolTip", "还原");
             // 自定义参数值
             // 如果要设置其它值 例 synth.xml 文件中  <defaultsProperty key="Synthetica.toolBar.background"> key就是 UIManager.put() 的key
             // UIManager.put("Synthetica.toolBar.background","plain/images/internalFrameTitlePaneBackground_selected.png");
