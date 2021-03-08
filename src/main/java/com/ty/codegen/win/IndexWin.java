@@ -241,7 +241,7 @@ public class IndexWin extends JFrame {
         // 设置小的箭头
         disconnectedButton.setUseSmallArrowIcon(false);
         // 设置下拉监听与图片的距离
-        disconnectedButton.setArrowIconSpace(5);
+        disconnectedButton.setArrowIconSpace(8);
         // 设置文本在图片下方
         // 设置文本水平居中
         disconnectedButton.setHorizontalTextPosition(JButton.CENTER);
