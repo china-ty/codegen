@@ -52,6 +52,9 @@ public class WinGlobalSettingUtil {
             SyntheticaLookAndFeel.setFont("新宋体", 14);
             // 设置导航栏(工具栏)最左边是否可拖动的大小
             UIManager.put("Synthetica.toolBar.handle.size",0);
+            UIManager.put( "Tree.selectionForeground",Color.RED);
+            UIManager.put( "Tree.selectionBackground",Color.RED);
+            UIManager.put( "Tree.selectionBorderColor",Color.RED);
             // JYDocking 参数 设置中文工具提示
             UIManager.put("JYDocking.titlebar.minimizeButton.toolTip" , "最小化");
             UIManager.put("JYDocking.titlebar.maximizeButton.toolTip", "最大化");

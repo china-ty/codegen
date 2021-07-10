@@ -3,6 +3,8 @@ package com.ty.codegen;
 
 
 
+import de.javasoft.synthetica.democenter.DemoCenter;
+
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -19,6 +21,10 @@ public class DemoTest extends JFrame implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
 
+    }
+
+    public static void main(String[] args) {
+        new DemoCenter();
     }
     //    private static String[] lafs = new String[]{"de.javasoft.plaf.synthetica.SyntheticaPlainLookAndFeel", "javax.swing.plaf.metal.MetalLookAndFeel"};
 //    private JTabbedPane tabbedPane;

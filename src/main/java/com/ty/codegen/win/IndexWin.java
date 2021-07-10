@@ -341,7 +341,12 @@ public class IndexWin extends JFrame {
         // 获取数据库名
         String databaseName = tableService.databaseName();
         // 设置根节点(数据库名)
-        DefaultMutableTreeNode rootNode = new DefaultMutableTreeNode(databaseName);
+        DefaultMutableTreeNode rootNode = new DefaultMutableTreeNode("tableTrees");
+        DefaultMutableTreeNode databaseTreeNode = new DefaultMutableTreeNode(databaseName);
+        DefaultMutableTreeNode mysql = new DefaultMutableTreeNode("我的配置");
+        rootNode.add(databaseTreeNode);
+        mysql.add(new DefaultMutableTreeNode("配置2", false));
+        rootNode.add(mysql);
         // 获取所有表名
         Map<String,String> tableNameMap = tableService.listTableNames();
         DefaultMutableTreeNode tableNode = null;
@@ -350,11 +355,12 @@ public class IndexWin extends JFrame {
         for (Map.Entry<String, String> entry : entries) {
             // 参数二 表示不能有子节点
             tableNode = new DefaultMutableTreeNode(entry.getKey(), false);
-            rootNode.add(tableNode);
+            databaseTreeNode.add(tableNode);
         }
         // 创建数据库根节点
         JTree tableTrees = new JTree(rootNode);
-        // tableTrees.setEnabled(false);
+        tableTrees.setRootVisible(false);
+        //tableTrees.setEnabled(false);
         // 设置对数据表节点的相关鼠标的监听(查询表相关的字段属性等功能)
         tableTrees.addMouseListener(new TableTreeMouseEventAdapter(tableModel));
         // 设置图标
