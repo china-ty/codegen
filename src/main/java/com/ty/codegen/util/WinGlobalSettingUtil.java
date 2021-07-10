@@ -61,6 +61,8 @@ public class WinGlobalSettingUtil {
             UIManager.put("JYDocking.titlebar.floatButton.toolTip", "脱离");
             UIManager.put("JYDocking.titlebar.floatButton.selected.toolTip", "还原");
             UIManager.put("JYDocking.titlebar.maximizeButton.selected.toolTip", "还原");
+            // 设置文本输入框字体
+            UIManager.put("TextField.font", new Font("新宋体", Font.PLAIN,17));
             // 自定义参数值
             // 如果要设置其它值 例 synth.xml 文件中  <defaultsProperty key="Synthetica.toolBar.background"> key就是 UIManager.put() 的key
             // UIManager.put("Synthetica.toolBar.background","plain/images/internalFrameTitlePaneBackground_selected.png");

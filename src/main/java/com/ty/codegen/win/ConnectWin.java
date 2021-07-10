@@ -82,19 +82,19 @@ public class ConnectWin extends JDialog {
         // 获取窗体的面板
         Container contentPane = this.getContentPane();
         // 标签的X坐标
-        int labelX = 35;
+        int labelX = 15;
         // 标签和输入框的Y坐标
         int Y = 30;
         // 标签的宽度
-        int labelWidth = 70;
+        int labelWidth = 55;
         // 标签的高度
-        int labelHeight = 25;
+        int labelHeight = 35;
         // 与上一行直接的间距
         int spacing = 10;
         // 输入框的X坐标
-        int textX = 120;
+        int textX = 105;
         // 输入框的宽度
-        int textWidth = 130;
+        int textWidth = 175;
         // 输入框的高度
         int textHeight = labelHeight;
 
@@ -103,7 +103,7 @@ public class ConnectWin extends JDialog {
         linkNameLabel.setBounds(labelX, Y, labelWidth, labelHeight);
         JTextField linkNameText = new JTextField();
         linkNameText.setBounds(textX, Y, textWidth, textHeight);
-        linkNameText.addKeyListener(new TextFieldKeyAdapter(5));
+        linkNameText.addKeyListener(new TextFieldKeyAdapter(25));
         // 计算下一行的Y坐标
         Y = Y + labelHeight + spacing;
         // 主机
