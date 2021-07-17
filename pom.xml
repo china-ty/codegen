@@ -59,6 +59,14 @@
             <scope>system</scope>
             <systemPath>${basedir}/lib/plaf-synthetica.jar</systemPath>
         </dependency>
+        <!--  操作ini类型文件工具类-->
+        <dependency>
+            <groupId>org.dtools</groupId>
+            <artifactId>javaini</artifactId>
+            <version>v1.1.00</version>
+            <scope>system</scope>
+            <systemPath>${basedir}/lib/org.dtools.javaini-v1.1.00.jar</systemPath>
+        </dependency>
         <!-- lombok 工具 -->
         <dependency>
             <groupId>org.projectlombok</groupId>
