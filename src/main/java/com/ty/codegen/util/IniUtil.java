@@ -1,6 +1,7 @@
 package com.ty.codegen.util;
 
 import com.mysql.cj.util.StringUtils;
+import lombok.extern.slf4j.Slf4j;
 import org.dtools.ini.*;
 
 import java.io.File;
@@ -11,6 +12,7 @@ import java.util.stream.Collectors;
 /**
  * .ini 文件工具类
  */
+@Slf4j
 public class IniUtil {
 
     private static final String SYSTEM_CONFIG_FILE = "config/config.ini";
@@ -31,7 +33,7 @@ public class IniUtil {
                 // 再一次读取,获取最新配置信息
                 fileReader.read();
             } catch (IOException e) {
-                System.out.println("读取系统文件失败" + e.getMessage());
+                log.error("读取系统文件失败 e : {}",e.getMessage());
                 e.printStackTrace();
                 return null;
             }
@@ -47,7 +49,7 @@ public class IniUtil {
         try {
             iniFileReader.read();
         } catch (IOException e) {
-            System.out.println("读取系统文件失败" + e.getMessage());
+            log.error("读取系统文件失败 e : {}",e.getMessage());
             e.printStackTrace();
             return null;
         }
@@ -69,11 +71,11 @@ public class IniUtil {
                 // 不存在 进行 创建
                 boolean isCreate = file.createNewFile();
                 if (!isCreate) {
-                    System.out.println("创建系统配置文件失败");
+                    log.error("创建系统配置文件失败");
                     return null;
                 }
             } catch (IOException e) {
-                System.out.println("创建系统配置文件失败" + e.getMessage());
+                log.error("创建系统配置文件失败 e : {}",e.getMessage());
                 e.printStackTrace();
                 return null;
             }
@@ -152,7 +154,7 @@ public class IniUtil {
             // 写入配置文件
             iniFileWriter.write();
         } catch (IOException e) {
-            System.out.println("写入配置文件失败" + e.getMessage());
+            log.error("写入配置文件失败 e : {}",e.getMessage());
             e.printStackTrace();
             return false;
         }

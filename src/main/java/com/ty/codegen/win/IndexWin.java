@@ -6,7 +6,7 @@ import com.ty.codegen.event.TableFieldScrollPaneMouseEventAdapter;
 import com.ty.codegen.event.TableTreeMouseEventAdapter;
 import com.ty.codegen.proxy.ServiceProxy;
 import com.ty.codegen.service.TableService;
-import com.ty.codegen.service.impl.TableServiceImpl;
+import com.ty.codegen.service.impl.MysqlTableServiceImpl;
 import com.ty.codegen.util.IconUtil;
 import com.ty.codegen.util.MysqlDBUtil;
 import de.javasoft.swing.JYDockingPort;
@@ -14,6 +14,7 @@ import de.javasoft.swing.JYDockingView;
 import de.javasoft.swing.SimpleDropDownButton;
 import de.javasoft.swing.plaf.jydocking.DefaultFloatAction;
 import de.javasoft.swing.plaf.jydocking.DefaultMaximizeAction;
+import lombok.extern.slf4j.Slf4j;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -32,6 +33,7 @@ import java.util.Set;
 /**
  * 主界面窗体
  */
+@Slf4j
 public class IndexWin extends JFrame {
 
     private DefaultTableModel tableModel = new DefaultTableModel() {
@@ -45,11 +47,12 @@ public class IndexWin extends JFrame {
             return true;
         }
     };
-    private TableService tableService = ServiceProxy.proxyPowerful(new TableServiceImpl());
+    private TableService tableService;
 
     public IndexWin() throws Exception {
         // 主窗体组件和数据加载
         loading();
+        tableService = ServiceProxy.proxyPowerful(new MysqlTableServiceImpl());
         // 窗体初始化组件
         init();
         // 显示窗体
@@ -149,10 +152,10 @@ public class IndexWin extends JFrame {
         this.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
-                System.out.println("程序关闭中......");
-                System.out.println("关闭相关数据库连接中......");
+                log.info("程序关闭中......");
+                log.info("关闭相关数据库连接中......");
                 MysqlDBUtil.closeAll();
-                System.out.println("程序关闭成功");
+                log.info("程序关闭成功");
 
             }
 

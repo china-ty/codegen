@@ -8,12 +8,11 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Vector;
 
 /**
  * 对表相关的业务层的实现
  */
-public class TableServiceImpl implements TableService {
+public class MysqlTableServiceImpl implements TableService {
 
     private TableDao tableDao = new TableDao();
 

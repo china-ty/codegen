@@ -2,7 +2,7 @@ package com.ty.codegen.event;
 
 import com.ty.codegen.entity.TableField;
 import com.ty.codegen.service.TableService;
-import com.ty.codegen.service.impl.TableServiceImpl;
+import com.ty.codegen.service.impl.MysqlTableServiceImpl;
 import com.ty.codegen.util.IconUtil;
 import com.ty.codegen.util.MenuUtil;
 import com.ty.codegen.win.CodePreviewWin;
@@ -23,7 +23,7 @@ import java.util.Map;
  */
 public class TableTreeMouseEventAdapter extends MouseAdapter {
 
-    private TableService tableService = new TableServiceImpl();
+    private TableService tableService = new MysqlTableServiceImpl();
 
     private DefaultTableModel tableModel;
 

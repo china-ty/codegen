@@ -1,5 +1,7 @@
 package com.ty.codegen.proxy;
 
+import lombok.extern.slf4j.Slf4j;
+
 import java.lang.reflect.Proxy;
 import java.util.Objects;
 
@@ -11,6 +13,7 @@ import java.util.Objects;
  * @Date: 2021/1/16
  * @Version: 1.0
  **/
+@Slf4j
 public class ServiceProxy {
 
     /**
@@ -31,7 +34,7 @@ public class ServiceProxy {
             try {
                 invoke = method.invoke(targetObject, args);
             } catch (Exception e) {
-                System.out.println("=======全局异常处理===>" + e.getMessage());
+                log.error("=======全局异常处理===> e: {}",e.getMessage());
                 e.printStackTrace();
             }
             return invoke;
