@@ -5,10 +5,12 @@ import com.ty.codegen.service.TableService;
 import com.ty.codegen.service.impl.MysqlTableServiceImpl;
 import com.ty.codegen.util.IconUtil;
 import com.ty.codegen.util.MenuUtil;
+import com.ty.codegen.util.TableModelUtil;
 import com.ty.codegen.win.CodePreviewWin;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
 import javax.swing.tree.TreePath;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -25,39 +27,43 @@ public class TableTreeMouseEventAdapter extends MouseAdapter {
 
     private TableService tableService = new MysqlTableServiceImpl();
 
-    private DefaultTableModel tableModel;
+    private JTable tableField;
 
-    public TableTreeMouseEventAdapter(DefaultTableModel tableModel) {
-        this.tableModel = tableModel;
+    public TableTreeMouseEventAdapter(JTable tableField) {
+        this.tableField = tableField;
     }
 
     @Override
     public void mouseClicked(MouseEvent e) {
         int clickCount = e.getClickCount();
         // 点击的数量等于2表示双击
-        if (clickCount == 2) {
-            JTree tableTrees = (JTree) e.getComponent();
-            this.clear(tableModel);
-            // 获取选中的节点的名字
-            String selectNodeName = tableTrees.getSelectionPath().getLastPathComponent().toString();
-            try {
-                List<TableField> tableFields = tableService.getTableFields(selectNodeName);
-                for (TableField tableField : tableFields) {
-                    Object[] objects = new Object[7];
-                    objects[0] = tableField.getName();
-                    objects[1] = tableField.getDbType();
-                    objects[2] = tableField.getEntityType();
-                    objects[3] = tableField.getLength();
-                    objects[4] = tableField.getDecimal();
-                    objects[5] = tableField.getRequired();
-                    objects[6] = tableField.getRemarks();
-                    tableModel.addRow(objects);
-                }
-            } catch (Exception exception) {
-                System.out.println("数据库异常");
-                JOptionPane.showMessageDialog(null, "数据库链接错误!", "提示",JOptionPane.ERROR_MESSAGE);
-                // exception.printStackTrace();
+        if (clickCount != 2) {
+            return;
+        }
+        JTree tableTrees = (JTree) e.getComponent();
+        DefaultTableModel tableModel = TableModelUtil.getDefaultTableModel();
+        // 获取选中的节点的名字
+        String selectNodeName = tableTrees.getSelectionPath().getLastPathComponent().toString();
+        try {
+            List<TableField> tableFields = tableService.getTableFields(selectNodeName);
+            for (TableField tableField : tableFields) {
+                Object[] dataArray = new Object[7];
+                dataArray[0] = tableField.getName();
+                dataArray[1] = tableField.getDbType();
+                dataArray[2] = tableField.getEntityType();
+                dataArray[3] = tableField.getLength();
+                dataArray[4] = tableField.getDecimal();
+                dataArray[5] = tableField.getRequired();
+                dataArray[6] = tableField.getRemarks();
+                tableModel.addRow(dataArray);
             }
+            tableField.setModel(tableModel);
+            // 设置下标第5列使用Boolean(复选框) 注意 这一列传入的类型只能是Boolean
+            TableColumn column = tableField.getColumnModel().getColumn(5);
+            column.setCellEditor(tableField.getDefaultEditor(Boolean.class));
+            column.setCellRenderer(tableField.getDefaultRenderer(Boolean.class));
+        } catch (Exception exception) {
+            JOptionPane.showMessageDialog(null, "获取数据异常!", "提示", JOptionPane.ERROR_MESSAGE);
         }
     }
 

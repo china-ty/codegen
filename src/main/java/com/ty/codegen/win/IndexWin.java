@@ -9,6 +9,7 @@ import com.ty.codegen.service.TableService;
 import com.ty.codegen.service.impl.MysqlTableServiceImpl;
 import com.ty.codegen.util.IconUtil;
 import com.ty.codegen.util.MysqlDBUtil;
+import com.ty.codegen.util.TableModelUtil;
 import de.javasoft.swing.JYDockingPort;
 import de.javasoft.swing.JYDockingView;
 import de.javasoft.swing.SimpleDropDownButton;
@@ -36,17 +37,7 @@ import java.util.Set;
 @Slf4j
 public class IndexWin extends JFrame {
 
-    private DefaultTableModel tableModel = new DefaultTableModel() {
-        // 禁用数据表格 当返回false为禁用true为可编辑
-        @Override
-        public boolean isCellEditable(int row, int column) {
-            // 禁用下标为0的第一列
-            if (column == 0) {
-                return false;
-            }
-            return true;
-        }
-    };
+
     private TableService tableService;
 
     public IndexWin() throws Exception {
@@ -264,10 +255,12 @@ public class IndexWin extends JFrame {
      * @return {@link JPanel}
      */
     private JPanel createCenterPane() throws SQLException{
-        // 设置左边的组件(数据库名和所有表名)
-        JYDockingView tableDockingView = createLeftTableNames();
+        // 创建Table存放字段明细等数据
+        JTable tableField = createTable();
         // 设置右边的组件(表的字段信息)
-        JYDockingView tableFieldDockingView = createRightTableFieldInfo();
+        JYDockingView tableFieldDockingView = createRightTableFieldInfo(tableField);
+        // 设置左边的组件(数据库名和所有表名)
+        JYDockingView tableDockingView = createLeftTableNames(tableField);
         // 创建整体面板
         JPanel centerPanel = new JPanel(new BorderLayout(0,0));
         // 将tableDockingView和tableFieldDockingView进行整理合并
@@ -281,14 +274,11 @@ public class IndexWin extends JFrame {
     }
 
     /**
-     * 创建右部表字段信息对接视图
-     * @return {@link JYDockingView}
+     * 创建JTable
+     * @return
      */
-    private JYDockingView createRightTableFieldInfo() {
-        // 表头（列名）
-        Object[] columnNames = {"字段名", "db类型", "Java类型", "长度", "小数点", "是否必填", "注释"};
-        // 设置头标题
-        tableModel.setDataVector(null, columnNames);
+    private JTable createTable() {
+        DefaultTableModel tableModel = TableModelUtil.getDefaultTableModel();
         // tableModel.setDataVector(rowData,columnNames);
         // 创建一个表格，指定 所有行数据 和 表头
         JTable tableField = new JTable(tableModel);
@@ -296,12 +286,16 @@ public class IndexWin extends JFrame {
         tableField.setRowHeight(25);
         // 取消垂直线显示
         tableField.setShowVerticalLines(false);
-        // 设置下标第5列使用Boolean(复选框) 注意 这一列传入的类型只能是Boolean
-        TableColumn column = tableField.getColumnModel().getColumn(5);
-        column.setCellEditor(tableField.getDefaultEditor(Boolean.class));
-        column.setCellRenderer(tableField.getDefaultRenderer(Boolean.class));
         // 监听数据表格中数据是否改变事件
         tableField.addMouseListener(new TableFieldEventAdapter());
+        return tableField;
+    }
+
+    /**
+     * 创建右部表字段信息对接视图
+     * @return {@link JYDockingView}
+     */
+    private JYDockingView createRightTableFieldInfo(JTable tableField) {
         // 创建对接视图
         JYDockingView tableFieldDockingView = new JYDockingView("tableFieldDockingView", "字段信息", "tableFieldDockingView");
         // 添加滚动面板
@@ -340,7 +334,7 @@ public class IndexWin extends JFrame {
      * 创建左部数据库和所有表名对接视图
      * @return {@link JYDockingView}
      */
-    private JYDockingView createLeftTableNames() throws SQLException {
+    private JYDockingView createLeftTableNames(JTable tableField) throws SQLException {
         // 获取数据库名
         String databaseName = tableService.databaseName();
         // 设置根节点(数据库名)
@@ -365,7 +359,7 @@ public class IndexWin extends JFrame {
         tableTrees.setRootVisible(false);
         //tableTrees.setEnabled(false);
         // 设置对数据表节点的相关鼠标的监听(查询表相关的字段属性等功能)
-        tableTrees.addMouseListener(new TableTreeMouseEventAdapter(tableModel));
+        tableTrees.addMouseListener(new TableTreeMouseEventAdapter(tableField));
         // 设置图标
         DefaultTreeCellRenderer renderer = new DefaultTreeCellRenderer(){
             @Override

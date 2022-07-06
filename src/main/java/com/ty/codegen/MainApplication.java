@@ -32,8 +32,9 @@ public class MainApplication {
             try {
                 new IndexWin();
             } catch (Exception e) {
-                log.error("程序启动失败");
-                e.printStackTrace();
+                if (log.isErrorEnabled()) {
+                    log.error("程序启动失败",e);
+                }
             }
         });
     }
